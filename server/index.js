@@ -51,4 +51,4 @@ const getPodEpisodeData = async() => {
     }
 }
 
-getPodEpisodes();
+getPodEpisodeData();
