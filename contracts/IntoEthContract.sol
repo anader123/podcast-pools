@@ -13,11 +13,11 @@ contract IntoTheEther is Ownable, ERC721 {
         poolAddress = _poolAddress;
     }
 
-    function mintEpisode(string memory tokenURI)
-        public
-        onlyOwner
-        returns (uint256)
-    {
+    function getTokenCount() external view returns(uint256) {
+        return _tokenIds.current();
+    }
+
+    function mintEpisode(string memory tokenURI) public onlyOwner returns (uint256) {
         _tokenIds.increment();
 
         uint256 newItemId = _tokenIds.current();
