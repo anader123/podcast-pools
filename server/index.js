@@ -2,7 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const { getPodEpisodeData } = require('./utils/rssHelper');
-const { ipfsTest } = require('./utils/ipfsUploader');
+const { uploadImageFile } = require('./utils/ipfsUploader');
 
 // .env Variables
 const {
@@ -24,4 +24,4 @@ app.use(cors());
 app.listen(SERVER_PORT, () => console.log(`Server is starting up on Port ${SERVER_PORT}`));
 
 // param is the episode to get, 0 is the latest
-getPodEpisodeData(0);
+getPodEpisodeData(1);

@@ -13,7 +13,11 @@ contract IntoTheEther is Ownable, ERC721 {
         poolAddress = _poolAddress;
     }
 
-    function getTokenCount() external view returns(uint256) {
+    // function contractURI() public view returns (string memory) {
+    //     return "";
+    // }
+
+    function getTokenCount() public view returns(uint256) {
         return _tokenIds.current();
     }
 

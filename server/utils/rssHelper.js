@@ -8,16 +8,13 @@ const {
 
 // Makes request to RSS feed
 const getPodEpisodeData = async(index) => {
-    let xlmResponse = await axios.get(RSS_FEED);
-    xlmResponse = xlmResponse.data; 
+    let response = await axios.get(RSS_FEED);
+    let data = response.data; 
 
     let xlmResult;
-    parseString(xlmResponse, function (err, result) {
+    parseString(data, function (err, result) {
       xlmResult = result;
     });
-
-    // latest release time
-    const latestPubDate = xlmResult.rss.channel[0].pubDate[0]; 
 
     // episode data
     const episode = xlmResult.rss.channel[0].item[index]; 

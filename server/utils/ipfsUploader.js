@@ -1,7 +1,8 @@
 const IPFS = require('ipfs-mini');
 const ipfs = new IPFS({ host: 'ipfs.infura.io', port: 5001, protocol: 'https' });
+// const fs = require('fs');
 
-let ipfsImage; // IPFS hash of where the image is stored
+const ipfsImage = "ipfs://ipfs/QmNfNa7M9tQbRieAbsEnLKKa8UcyHffjMjBaBB1wJGC7hu"; 
 const intoTheEtherURL = "https://podcast.ethhub.io/";
 
 const getTokenURIData = (dataObj) => {
@@ -33,4 +34,13 @@ const uploadURIData = (dataObj) => {
     });
 }
 
-module.exports = { uploadURIData, ipfsTest };
+
+// const fileName = "ETHHUB_Podcast.png";
+// const filePath = "./server/ETHHUB_Podcast.png";
+// const uploadImageFile = async (fileName, filePath) => {
+//     const file = fs.readFileSync(filePath);
+//     const fileAdded = await ipfs.add({path: fileName, content: file});
+//     console.log(fileAdded);
+// }
+
+module.exports = { uploadURIData };
