@@ -14,14 +14,12 @@ const {
     IPFS_PROVIDER
 } = process.env;
 
-
 // App Instance
 const app = express();
 
 // Middleware 
 app.use(express.json());
 app.use(cors());
-// app.use(xmlparser());
 
 // Server Listening 
 app.listen(SERVER_PORT, () => console.log(`Server is starting up on Port ${SERVER_PORT}`));
@@ -36,18 +34,21 @@ const getPodEpisodeData = async() => {
       xlmResult = result;
     });
 
-    const latestPubDate = xlmResult.rss.channel[0].pubDate[0]; // latest release time
-    const episode = xlmResult.rss.channel[0].item[0]; // newest episode
-    const title = episode.title[0];
-    const episodePubDate = episode.pubDate[0];
-    const description = episode.description[0];
+    // latest release time
+    const latestPubDate = xlmResult.rss.channel[0].pubDate[0]; 
 
+    // episode data, 0 = newest ep
+    const episode = xlmResult.rss.channel[0].item[0]; 
+    const title = episode.title[0];
+    const pubDate = episode.pubDate[0];
+    const description = episode.description[0];
+    const duration = episode['itunes:duration'][0];
+    
+    const episodeData = {title, pubDate, description, duration};
+    
     return {
         latestPubDate,
-        episode,
-        title,
-        episodePubDate,
-        description
+        episodeData
     }
 }
 
