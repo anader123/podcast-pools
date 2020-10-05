@@ -1,6 +1,11 @@
 const IPFS = require('ipfs-mini');
+const axios = require('axios');
 const ipfs = new IPFS({ host: 'ipfs.infura.io', port: 5001, protocol: 'https' });
 // const fs = require('fs');
+
+const {
+    IPFS_PROVIDER
+} = process.env;
 
 const ipfsImage = "ipfs://ipfs/QmNfNa7M9tQbRieAbsEnLKKa8UcyHffjMjBaBB1wJGC7hu"; 
 const intoTheEtherURL = "https://podcast.ethhub.io/";
@@ -30,8 +35,20 @@ const uploadURIData = (dataObj) => {
         if(err) {
             return console.log(err);
         }
-        return hash;
+        // returns formatted tokenURI for ipfs 
+        return `ipfs://ipfs/${hash}`;
     });
+}
+
+const getNameFromIpfs = async (ipfsHash) => {
+    try {
+        const result = await axios.get(`${IPFS_PROVIDER}${ipfsHash}`);
+        const name = result.data.name;
+        return name;
+    } catch (error) {
+        console.log(error);
+        return false;
+    }
 }
 
 // const uploadContractURI = () => {
@@ -58,4 +75,4 @@ const uploadURIData = (dataObj) => {
 //     console.log(fileAdded);
 // }
 
-module.exports = { uploadURIData };
+module.exports = { uploadURIData, getNameFromIpfs };

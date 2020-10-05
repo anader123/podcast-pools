@@ -1,6 +1,6 @@
 pragma solidity ^0.6.0;
 
-// _baseURI = ipfs://ipfs/QmdyQRNEFnjSX1VivhokGqnLgpq3oBxeStv6VJNdo3owZt
+// _baseURI = ipfs://ipfs/QmdyQRNEFnjSX1VivhokGqnLgpq3oBxeStv6VJNdo3owZt (contractURI)
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
@@ -14,10 +14,6 @@ contract IntoTheEther is Ownable, ERC721 {
     constructor(address _mintAddress, string memory _baseURI) public ERC721("Into the Ether", "ITE") {
         mintAddress = _mintAddress;
         _setBaseURI(_baseURI);
-    }
-
-    function getTokenCount() public view returns(uint256) {
-        return _tokenIds.current();
     }
 
     function mintEpisode(string memory tokenURI) public onlyOwner returns (uint256) {

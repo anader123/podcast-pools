@@ -42,6 +42,10 @@ module.exports = {
     // timeout: 100000
   },
 
+  contracts_directory: './contracts/',
+  contracts_build_directory: './server/abis/',
+  // contracts_build_directory: './src/abis/',
+
   // Configure your compilers
   compilers: {
     solc: {
