@@ -5,10 +5,6 @@ pragma solidity 0.6.6;
 contract PodPoolStrategyContract is PeriodicPrizeStrategy {
   address private podCreator;
 
-  constructor(address _podCreator) public {
-    podCreator = _podCreator;
-  }
-
   function initialize(
     address _trustedForwarder,
     uint256 _prizePeriodStart,
@@ -17,7 +13,8 @@ contract PodPoolStrategyContract is PeriodicPrizeStrategy {
     address _ticket,
     address _sponsorship,
     RNGInterface _rng,
-    address[] memory _externalErc20s
+    address[] memory _externalErc20s,
+    address _podCreator
   ) public initializer {
     PeriodicPrizeStrategy.initialize(
       _trustedForwarder,
@@ -29,6 +26,7 @@ contract PodPoolStrategyContract is PeriodicPrizeStrategy {
       _rng,
       _externalErc20s
     );
+    podCreator = _podCreator;
   }
 
   function _distribute(uint256 randomNumber) internal override {
