@@ -26,6 +26,10 @@ const mainFunction = async () => {
     // run again if token failed to mint
     if(result === false) mainFunction();
     console.log('token was minted');
+    const added = await addERC721ToPool();
+    // function addExternalErc721Award(address _externalErc721, uint256[] calldata _tokenIds) on strat contract is used to register tokens
+    // start the next prize comp
+    // award prize? 
 }
 
 // Server Listening 

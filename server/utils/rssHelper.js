@@ -1,14 +1,9 @@
 const axios = require('axios');
 const parseString = require('xml2js').parseString; // Parsing XML
 
-// .env Variables
-const {
-    RSS_FEED
-} = process.env;
-
 // Makes request to RSS feed
 const getPodEpisodeData = async(index) => {
-    let response = await axios.get(RSS_FEED);
+    let response = await axios.get(process.env.RSS_FEED);
     let data = response.data; 
 
     let xlmResult;

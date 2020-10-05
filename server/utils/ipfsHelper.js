@@ -42,7 +42,7 @@ const uploadURIData = (dataObj) => {
 
 const getNameFromIpfs = async (ipfsHash) => {
     try {
-        const result = await axios.get(`${IPFS_PROVIDER}${ipfsHash}`);
+        const result = await axios.get(`${process.env.IPFS_PROVIDER}${ipfsHash}`);
         const name = result.data.name;
         return name;
     } catch (error) {

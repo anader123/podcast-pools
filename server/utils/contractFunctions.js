@@ -47,4 +47,13 @@ const startPrizeContest = () => {
 
 }
 
-module.exports = {web3, getRecentTokenHash, mintToken};
+const addERC721ToPool = async () => {
+    try {
+        const tokenId = await intoEtherTokenContract.methods.totalSupply().call(); //Newest token id == count;
+        poolContract.methods.addExternalErc721Award(INTO_ETHER_TOKEN_ADDRESS, [tokenId]);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+module.exports = {web3, getRecentTokenHash, mintToken, addERC721ToPool};
