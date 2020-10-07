@@ -12,25 +12,37 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-const mainFunction = async () => {
-    const episodeData = await getPodEpisodeData(0); // 0 gets the latest epi
-    const recentIpfsHash = await getRecentTokenHash();
-    const recentTokenName = await getNameFromIpfs(recentIpfsHash);
-    const recentEpisodeName = episodeData.name;
+// const mainFunction = async () => {
+//     const episodeData = await getPodEpisodeData(0); // 0 gets the latest epi
+//     const recentIpfsHash = await getRecentTokenHash();
+//     const recentTokenName = await getNameFromIpfs(recentIpfsHash);
+//     const recentEpisodeName = episodeData.name;
 
-    if(recentTokenName === recentEpisodeName) return;
+//     if(recentTokenName === recentEpisodeName) return;
 
-    const tokenURI = await uploadURIData(episodeData);
-    const result = await mintToken(tokenURI);
+//     const tokenURI = await uploadURIData(episodeData);
+//     const result = await mintToken(tokenURI);
 
-    // run again if token failed to mint
-    if(result === false) mainFunction();
-    console.log('token was minted');
-    const added = await addERC721ToPool();
-    // function addExternalErc721Award(address _externalErc721, uint256[] calldata _tokenIds) on strat contract is used to register tokens
-    // start the next prize comp
-    // award prize? 
+//     // run again if token failed to mint
+//     if(result === false) mainFunction();
+//     console.log('token was minted');
+//     const added = await addERC721ToPool();
+//     // function addExternalErc721Award(address _externalErc721, uint256[] calldata _tokenIds) on strat contract is used to register tokens
+//     // start the next prize comp
+//     // award prize? 
+// }
+
+const mintEpisodeToken = async () => {
+    const epiData = await getPodEpisodeData(1);
+    const ipfsHash = await uploadURIData(epiData);
+    console.log(ipfsHash)
+    mintToken(ipfsHash);
 }
+
+
+// getPodEpisodeData(3);
+mintEpisodeToken();
+// getRecentTokenHash();
 
 // Server Listening 
 app.listen(process.env.SERVER_PORT, () => console.log(`Server is starting up on Port ${process.env.SERVER_PORT}`));

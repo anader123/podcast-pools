@@ -29,15 +29,14 @@ const formatTokenURIData = (dataObj) => {
     }
 }
 
-const uploadURIData = (dataObj) => {
-    const URIData = formatTokenURIData(dataObj);
-    ipfs.addJSON(URIData, (err, hash) => {
-        if(err) {
-            return console.log(err);
-        }
-        // returns formatted tokenURI for ipfs 
-        return `ipfs://ipfs/${hash}`;
-    });
+const uploadURIData = async (dataObj) => {
+    try {
+        const URIData = formatTokenURIData(dataObj);
+        const ipfsHash = await ipfs.addJSON(URIData);
+        return ipfsHash;
+    } catch (error) {
+        console.log(error);
+    }
 }
 
 const getNameFromIpfs = async (ipfsHash) => {
