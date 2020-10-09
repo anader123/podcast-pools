@@ -33,14 +33,13 @@ app.use(cors());
 // }
 
 const mintEpisodeToken = async () => {
-    const epiData = await getPodEpisodeData(1);
+    const epiData = await getPodEpisodeData(2);
     const ipfsHash = await uploadURIData(epiData);
     console.log(ipfsHash)
     mintToken(ipfsHash);
 }
 
 
-// getPodEpisodeData(3);
 mintEpisodeToken();
 // getRecentTokenHash();
 

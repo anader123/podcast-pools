@@ -24,7 +24,7 @@ const getPodEpisodeData = async(index) => {
     
     const episodeData = {name, date, description, duration};
     console.log(episodeData);
-    return episodeData
+    return episodeData;
 }
 
 const formatData = (name, description) => {
