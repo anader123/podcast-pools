@@ -3,7 +3,13 @@ const express = require('express');
 const cors = require('cors');
 const { getPodEpisodeData } = require('./utils/rssHelper');
 const { uploadURIData, getNameFromIpfs } = require('./utils/ipfsHelper');
-const { getRecentTokenHash, mintToken } = require('./utils/contractFunctions');
+const { 
+    getRecentTokenHash, 
+    mintToken, 
+    startAndAwardPrize,
+    checkStratContract,
+    addERC721ToPrizePool 
+} = require('./utils/contractFunctions');
 
 // App Instance
 const app = express();
@@ -12,36 +18,29 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-// const mainFunction = async () => {
-//     const episodeData = await getPodEpisodeData(0); // 0 gets the latest epi
-//     const recentIpfsHash = await getRecentTokenHash();
-//     const recentTokenName = await getNameFromIpfs(recentIpfsHash);
-//     const recentEpisodeName = episodeData.name;
+const checkRssAndMint = async() => {
+    // const episodeData = await getPodEpisodeData(2); // 0 gets the latest epi
+    // const recentIpfsHash = await getRecentTokenHash();
+    // const recentTokenEpisodeName = await getNameFromIpfs(recentIpfsHash);
+    // const recentEpisodeName = episodeData.name;
 
-//     if(recentTokenName === recentEpisodeName) return;
+    // if(recentTokenEpisodeName === recentEpisodeName) return console.log('No new token to mint');
+    // if(recentTokenEpisodeName === false) return console.log('Error getting name data')
 
-//     const tokenURI = await uploadURIData(episodeData);
-//     const result = await mintToken(tokenURI);
+    // const tokenURI = await uploadURIData(episodeData);
+    // if(tokenURI === false) return console.log('Error with uploading to IPFS');
 
-//     // run again if token failed to mint
-//     if(result === false) mainFunction();
-//     console.log('token was minted');
-//     const added = await addERC721ToPool();
-//     // function addExternalErc721Award(address _externalErc721, uint256[] calldata _tokenIds) on strat contract is used to register tokens
-//     // start the next prize comp
-//     // award prize? 
-// }
-
-const mintEpisodeToken = async () => {
-    const epiData = await getPodEpisodeData(2);
-    const ipfsHash = await uploadURIData(epiData);
-    console.log(ipfsHash)
-    mintToken(ipfsHash);
+    // const mintResult = await mintToken(tokenURI);
+    // if(mintResult === false) return console.log('Error with minting NFT');
+    // console.log(`Token was minted. TxHash:${mintResult.transactionHash}`);
+    
+    const addResult = await addERC721ToPrizePool();
+    if(addResult === false) return console.log('Error with adding token to the pool');
+    console.log(`Token was added to pool. TxHash:${addResult.transactionHash}`);
 }
 
-
-mintEpisodeToken();
-// getRecentTokenHash();
+checkRssAndMint();
+// startAndAwardPrize()
 
 // Server Listening 
 app.listen(process.env.SERVER_PORT, () => console.log(`Server is starting up on Port ${process.env.SERVER_PORT}`));

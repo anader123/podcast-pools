@@ -11,7 +11,6 @@ const getPodEpisodeData = async(index) => {
       xlmResult = result;
     });
 
-    // episode data
     const episode = xlmResult.rss.channel[0].item[index]; 
     let name = episode.title[0];
     let description = episode.description[0];
@@ -23,7 +22,7 @@ const getPodEpisodeData = async(index) => {
     description = returnData.description;
     
     const episodeData = {name, date, description, duration};
-    console.log(episodeData);
+    console.log(episodeData)
     return episodeData;
 }
 

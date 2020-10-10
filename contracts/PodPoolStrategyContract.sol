@@ -29,6 +29,14 @@ contract PodPoolStrategyContract is PeriodicPrizeStrategy {
     podCreator = _podCreator;
   }
 
+  // function getAwardErc721TokenIds(address _NftAddress) public view returns(uint256[]) {
+  //   return externalErc721TokenIds[_NftAddress];
+  // }
+
+  function getPodCreator() public view returns(address) {
+    return podCreator;
+  }
+
   function awardSponsorship(address user, uint256 amount) internal {
     prizePool.award(user, amount, address(sponsorship));
   }

@@ -1,4 +1,6 @@
 const IntoTheEther = require('../abis/IntoTheEther.json');
+const PodPoolStrat = require('../abis/PodPoolStrat.json');
+const PrizePool = require('../abis/PrizePool.json');
 const HDWalletProvider = require("@truffle/hdwallet-provider");
 const Web3 = require('web3');
 
@@ -7,7 +9,9 @@ const {
     WEB3_PROVIDER,
     MINT_ADDRESS,
     INTO_ETHER_TOKEN_ADDRESS,
-    MNEMONIC_PHRASE
+    MNEMONIC_PHRASE,
+    PODCAST_STRAT_ADDRESS,
+    POOL_ADDRESS
 } = process.env;
 
 // @truffle/hdwallet-provider Setup
@@ -18,17 +22,16 @@ let provider = new HDWalletProvider({
     providerOrUrl: WEB3_PROVIDER
   });
 
-// Web3 Setup (Rinkeby)
+// Web3 Setup
 const web3 = new Web3(provider);
 const intoEtherTokenContract = new web3.eth.Contract(IntoTheEther.abi, INTO_ETHER_TOKEN_ADDRESS);
-// const strategyContract = new web3.eth.Contract(abi, strategyContractAddress);
-// const poolContract = new web3.eth.Contract(abi, poolContractAddress);
+const strategyContract = new web3.eth.Contract(PodPoolStrat.abi, PODCAST_STRAT_ADDRESS);
+const prizePoolContract = new web3.eth.Contract(PrizePool.abi, POOL_ADDRESS);
 
 const mintToken = async (ipfsHash) => {
     try{
-        const result = await intoEtherTokenContract.methods.mintEpisode(MINT_ADDRESS, ipfsHash).send({from: MINT_ADDRESS});
-        console.log(result.transactionHash);
-        return true;
+        const result = await intoEtherTokenContract.methods.mintEpisode(POOL_ADDRESS, ipfsHash).send({from: MINT_ADDRESS});
+        return result;
     } catch (error) {
         console.log(error);
         return false;
@@ -37,35 +40,60 @@ const mintToken = async (ipfsHash) => {
 
 const getRecentTokenHash = async() => {
     try {
-        console.log(intoEtherTokenContract.methods)
         const tokenCount = await intoEtherTokenContract.methods.totalSupply().call();
-        console.log(tokenCount);
         const result = await intoEtherTokenContract.methods.tokenURI(tokenCount).call();
-        console.log(result)
-        // const ipfsHash = result.slice(12); //return value is formatted as ipfs://ipfs/[hash]
-        // console.log(ipfsHash);
-        // return ipfsHash;
+        const ipfsHash = result.slice(12); //return value is formatted as ipfs://ipfs/[hash]
+        return ipfsHash;
     } catch (error) {
         console.log(error);
         return false;
     }
 }
 
-const startWinnerSelection = () => {
-
+const checkStratContract = async () => {
+    const result = await strategyContract.methods.prizePool().call();
+    console.log(result);
 }
 
-const startPrizeContest = () => {
-
+const getPrizePeriodRemaining = async () => {
+    const totalTimeSeconds = await strategyContract.methods.prizePeriodRemainingSeconds().call();
+    const days = Math.floor(totalTimeSeconds / (3600*24));
+    const hours = Math.floor((totalTimeSeconds/3600)-(days*24));
+    const minutes = Math.floor((totalTimeSeconds/60) - (days*24*60 + hours*60));
+    console.log(`${days}D ${hours}H ${minutes}M`);
 }
 
-const addERC721ToPool = async () => {
+const addERC721ToPrizePool = async () => {
     try {
-        const tokenId = await intoEtherTokenContract.methods.totalSupply().call(); //Newest token id == count;
-        poolContract.methods.addExternalErc721Award(INTO_ETHER_TOKEN_ADDRESS, [tokenId]);
+        const tokenId = await intoEtherTokenContract.methods.totalSupply().call(); //
+        const tokenIdAr = [+tokenId];
+        const result = await strategyContract.methods.addExternalErc721Award(INTO_ETHER_TOKEN_ADDRESS, tokenIdAr).send({from: MINT_ADDRESS});
+        return result
     } catch (error) {
         console.log(error);
+        return false;
     }
 }
 
-module.exports = {web3, getRecentTokenHash, mintToken, addERC721ToPool};
+const startAndAwardPrize = async () => {
+    try {
+        const canStart = await strategyContract.methods.canStartAward().call();
+        console.log(canStart)
+        if(!canStart) return;
+        await strategyContract.methods.startAward().send({from: MINT_ADDRESS});
+        await strategyContract.methods.completeAward().send({from: MINT_ADDRESS});
+    } catch (error) {
+        console.log(error);
+        return false;
+    }
+}
+
+module.exports = {
+    web3, 
+    getRecentTokenHash, 
+    mintToken, 
+    addERC721ToPrizePool, 
+    getPrizePeriodRemaining,
+    startAndAwardPrize,
+    checkStratContract
+};

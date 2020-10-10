@@ -24,3 +24,5 @@ yarn-debug.log*
 yarn-error.log*
 
 contracts/poolTogetherContracts
+contractFunctions.js
+server/abis

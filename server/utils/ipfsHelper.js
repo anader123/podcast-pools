@@ -3,10 +3,6 @@ const axios = require('axios');
 const ipfs = new IPFS({ host: 'ipfs.infura.io', port: 5001, protocol: 'https' });
 // const fs = require('fs');
 
-const {
-    IPFS_PROVIDER
-} = process.env;
-
 const ipfsImage = "ipfs://ipfs/QmNfNa7M9tQbRieAbsEnLKKa8UcyHffjMjBaBB1wJGC7hu"; 
 const intoTheEtherURL = "https://podcast.ethhub.io/";
 
