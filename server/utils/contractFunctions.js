@@ -82,16 +82,12 @@ const startAndAwardPrize = async () => {
     }
 }
 
-const checkERC721Prize = async() => {
-    const result = await strategyContract.methods.getAwardErc721TokenIds(INTO_ETHER_TOKEN_ADDRESS).call();
-    console.log(result);
-}
+
 
 module.exports = {
     getRecentTokenHash, 
     mintToken, 
     addERC721ToPrizePool, 
     getPrizePeriodRemaining,
-    startAndAwardPrize,
-    checkERC721Prize
+    startAndAwardPrize
 };
