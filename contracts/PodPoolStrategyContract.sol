@@ -2,8 +2,26 @@ pragma solidity 0.6.12;
 
 // // import "@pooltogether/pooltogether-contracts/contracts/prize-strategy/PeriodicPrizeStrategy.sol";
 
-contract PodPoolStrategyContract is PeriodicPrizeStrategy {
+contract PodPoolStrat is PeriodicPrizeStrategy {
   address private podCreator;
+
+  constructor(PeriodicPrizeStrategy prizeStrategy, address  _podCreator) public {
+    prizeStrategy = PeriodicPrizeStrategy(prizeStrategy);
+
+    address[] memory externalErc20s;
+
+    initialize(
+      prizeStrategy.trustedForwarder(),
+      prizeStrategy.prizePeriodStartedAt(),
+      prizeStrategy.prizePeriodSeconds(),
+      prizeStrategy.prizePool(),
+      address(prizeStrategy.ticket()),
+      address(prizeStrategy.sponsorship()),
+      prizeStrategy.rng(),
+      externalErc20s,
+      _podCreator
+    );
+  }
 
   function initialize(
     address _trustedForwarder,
@@ -15,7 +33,7 @@ contract PodPoolStrategyContract is PeriodicPrizeStrategy {
     RNGInterface _rng,
     address[] memory _externalErc20s,
     address _podCreator
-  ) public initializer {
+  ) internal initializer {
     PeriodicPrizeStrategy.initialize(
       _trustedForwarder,
       _prizePeriodStart,
@@ -29,9 +47,9 @@ contract PodPoolStrategyContract is PeriodicPrizeStrategy {
     podCreator = _podCreator;
   }
 
-  // function getAwardErc721TokenIds(address _NftAddress) public view returns(uint256[]) {
-  //   return externalErc721TokenIds[_NftAddress];
-  // }
+  function getAwardErc721TokenIds(address _NftAddress) public view returns(uint256[] memory) {
+    return externalErc721TokenIds[_NftAddress];
+  }
 
   function getPodCreator() public view returns(address) {
     return podCreator;

@@ -1,5 +1,5 @@
 const IntoTheEther = require('../abis/IntoTheEther.json');
-const PodPoolStrat = require('../abis/PodPoolStrat.json');
+const PodPoolStrat = require('../abis/PodPoolStratV2.json');
 const PrizePool = require('../abis/PrizePool.json');
 const HDWalletProvider = require("@truffle/hdwallet-provider");
 const Web3 = require('web3');
@@ -50,11 +50,6 @@ const getRecentTokenHash = async() => {
     }
 }
 
-const checkStratContract = async () => {
-    const result = await strategyContract.methods.prizePool().call();
-    console.log(result);
-}
-
 const getPrizePeriodRemaining = async () => {
     const totalTimeSeconds = await strategyContract.methods.prizePeriodRemainingSeconds().call();
     const days = Math.floor(totalTimeSeconds / (3600*24));
@@ -78,22 +73,25 @@ const addERC721ToPrizePool = async () => {
 const startAndAwardPrize = async () => {
     try {
         const canStart = await strategyContract.methods.canStartAward().call();
-        console.log(canStart)
+        console.log('CanStart:', canStart);
         if(!canStart) return;
         await strategyContract.methods.startAward().send({from: MINT_ADDRESS});
         await strategyContract.methods.completeAward().send({from: MINT_ADDRESS});
     } catch (error) {
-        console.log(error);
-        return false;
+        console.log('Error ocurred when trying to award the prize', error);
     }
 }
 
+const checkERC721Prize = async() => {
+    const result = await strategyContract.methods.getAwardErc721TokenIds(INTO_ETHER_TOKEN_ADDRESS).call();
+    console.log(result);
+}
+
 module.exports = {
-    web3, 
     getRecentTokenHash, 
     mintToken, 
     addERC721ToPrizePool, 
     getPrizePeriodRemaining,
     startAndAwardPrize,
-    checkStratContract
+    checkERC721Prize
 };
