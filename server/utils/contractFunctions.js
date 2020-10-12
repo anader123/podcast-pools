@@ -1,37 +1,33 @@
 const IntoTheEther = require('../abis/IntoTheEther.json');
 const PodPoolStrat = require('../abis/PodPoolStratV2.json');
 const PrizePool = require('../abis/PrizePool.json');
-const HDWalletProvider = require("@truffle/hdwallet-provider");
-const Web3 = require('web3');
+const ethers = require('ethers');
 
 // .env Variables
 const {
     WEB3_PROVIDER,
-    MINT_ADDRESS,
-    INTO_ETHER_TOKEN_ADDRESS,
-    MNEMONIC_PHRASE,
-    PODCAST_STRAT_ADDRESS,
-    POOL_ADDRESS
+    MINT_PRIV_KEY
 } = process.env;
 
-// @truffle/hdwallet-provider Setup
-let provider = new HDWalletProvider({
-    mnemonic: {
-      phrase: MNEMONIC_PHRASE
-    },
-    providerOrUrl: WEB3_PROVIDER
-  });
+// Contract Addresses (Rinkey);
+const PRIZE_STRAT_ADDRESS = '0xDf577189ad9659070D903d1a7A22d0Fb9E07f2f8';
+const PRIZE_POOL_ADDRESS = '0x65D16e7C4A7CB9D8Fa2D8Bbe55916FfB6Efe87fD';
+const INTO_ETH_TOKEN_ADDRESS = '0x6325764783626E233F5ff4f2D8D1F2bcCD9d6105';
 
-// Web3 Setup
-const web3 = new Web3(provider);
-const intoEtherTokenContract = new web3.eth.Contract(IntoTheEther.abi, INTO_ETHER_TOKEN_ADDRESS);
-const strategyContract = new web3.eth.Contract(PodPoolStrat.abi, PODCAST_STRAT_ADDRESS);
-const prizePoolContract = new web3.eth.Contract(PrizePool.abi, POOL_ADDRESS);
+// Ethers Setup
+const provider = new ethers.providers.JsonRpcProvider(WEB3_PROVIDER);
+const wallet = new ethers.Wallet(MINT_PRIV_KEY, provider);
+
+// Contract Instances 
+const intoEtherTokenContract = new ethers.Contract(INTO_ETH_TOKEN_ADDRESS, IntoTheEther.abi, wallet);
+const strategyContract = new ethers.Contract(PRIZE_STRAT_ADDRESS, PodPoolStrat.abi, wallet);
+const prizePoolContract = new ethers.Contract(PRIZE_POOL_ADDRESS, PrizePool.abi, wallet);
 
 const mintToken = async (ipfsHash) => {
     try{
-        const result = await intoEtherTokenContract.methods.mintEpisode(POOL_ADDRESS, ipfsHash).send({from: MINT_ADDRESS});
-        return result;
+        const resultTx = await intoEtherTokenContract.mintEpisode(PRIZE_POOL_ADDRESS, ipfsHash);
+        await resultTx.wait();
+        return resultTx.hash;
     } catch (error) {
         console.log(error);
         return false;
@@ -40,9 +36,10 @@ const mintToken = async (ipfsHash) => {
 
 const getRecentTokenHash = async() => {
     try {
-        const tokenCount = await intoEtherTokenContract.methods.totalSupply().call();
-        const result = await intoEtherTokenContract.methods.tokenURI(tokenCount).call();
+        const tokenCount = await intoEtherTokenContract.totalSupply();
+        const result = await intoEtherTokenContract.tokenURI(tokenCount);
         const ipfsHash = result.slice(12); //return value is formatted as ipfs://ipfs/[hash]
+        console.log(ipfsHash);
         return ipfsHash;
     } catch (error) {
         console.log(error);
@@ -50,20 +47,13 @@ const getRecentTokenHash = async() => {
     }
 }
 
-const getPrizePeriodRemaining = async () => {
-    const totalTimeSeconds = await strategyContract.methods.prizePeriodRemainingSeconds().call();
-    const days = Math.floor(totalTimeSeconds / (3600*24));
-    const hours = Math.floor((totalTimeSeconds/3600)-(days*24));
-    const minutes = Math.floor((totalTimeSeconds/60) - (days*24*60 + hours*60));
-    console.log(`${days}D ${hours}H ${minutes}M`);
-}
-
 const addERC721ToPrizePool = async () => {
     try {
-        const tokenId = await intoEtherTokenContract.methods.totalSupply().call(); //
+        const tokenId = await intoEtherTokenContract.totalSupply(); //
         const tokenIdAr = [+tokenId];
-        const result = await strategyContract.methods.addExternalErc721Award(INTO_ETHER_TOKEN_ADDRESS, tokenIdAr).send({from: MINT_ADDRESS});
-        return result
+        const addTx = await strategyContract.addExternalErc721Award(INTO_ETH_TOKEN_ADDRESS, tokenIdAr);
+        await addTx.wait();
+        return addTx.hash;
     } catch (error) {
         console.log(error);
         return false;
@@ -72,22 +62,20 @@ const addERC721ToPrizePool = async () => {
 
 const startAndAwardPrize = async () => {
     try {
-        const canStart = await strategyContract.methods.canStartAward().call();
+        const canStart = await strategyContract.canStartAward();
         console.log('CanStart:', canStart);
         if(!canStart) return;
-        await strategyContract.methods.startAward().send({from: MINT_ADDRESS});
-        await strategyContract.methods.completeAward().send({from: MINT_ADDRESS});
+        const startTx = await strategyContract.startAward();
+        await startTx.wait();
+        await strategyContract.completeAward();
     } catch (error) {
         console.log('Error ocurred when trying to award the prize', error);
     }
 }
 
-
-
 module.exports = {
     getRecentTokenHash, 
     mintToken, 
     addERC721ToPrizePool, 
-    getPrizePeriodRemaining,
     startAndAwardPrize
 };

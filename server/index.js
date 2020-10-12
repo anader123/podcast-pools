@@ -31,14 +31,14 @@ const checkRssAndMint = async() => {
 
     const mintResult = await mintToken(tokenURI);
     if(mintResult === false) return console.log('Error with minting NFT');
-    console.log(`Token was minted. TxHash:${mintResult.transactionHash}`);
+    console.log(`Token was minted. TxHash: ${mintResult}`);
     
     const addResult = await addERC721ToPrizePool();
     if(addResult === false) return console.log('Error with adding token to the pool');
-    console.log(`Token was added to pool. TxHash: ${addResult.transactionHash}`);
+    console.log(`Token was added to pool. TxHash: ${addResult}`);
 }
 
-// startAndAwardPrize();
+startAndAwardPrize();
 // checkRssAndMint();
 
 // Server Listening 

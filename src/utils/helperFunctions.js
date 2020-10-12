@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export const getNftDataFromIpfs = async (hashArray) => {
     const episodeDataArray = [];
-    hashArray.forEach(ipfsHash => {
+    hashArray.forEach(async ipfsHash => {
         try {
             const episodeData = await axios.get(`https://ipfs.infura.io/ipfs/${ipfsHash}`);
             episodeDataArray.push(episodeData);
