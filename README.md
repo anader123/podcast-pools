@@ -1,10 +1,10 @@
 # Podcast Pools
 
-_Win episode NFTs from your favorite Podcasts_
+_Win NFT episodes from your favorite Podcasts_
 
 ## Description
 
-Podcast Pools allows for podcast creators to capture value by having their fans lock up a stablecoin into a no loss lottery where the prize is an NFT that represents that week’s episode. Similar to Patreon, people can contribute money to creators they support, but instead of directly donating money, they are instead giving the interest earned by their assets for a chance to win a tokenized episode.
+Podcast Pools allows for podcast creators to capture value by having their fans lock up stablecoins into a no loss lottery where the prize is an NFT that represents that week’s episode. Similar to Patreon, people can contribute money to creators they support, but instead of directly donating money, they are instead giving the interest earned by their assets for a chance to win a tokenized episode.
 
 ## Resources Used
 
@@ -29,8 +29,6 @@ Podcast Pools allows for podcast creators to capture value by having their fans 
 
 **e.** Lastly, the server then calls a function on the strategy contract to let it know that an NFT episode needs to be added to the next prize round.
 
-<br>
-
 ## Contract Overview
 
 **ERC721 Contract:** Contract that stores all the state and metadata pointers for the NFTs that have been created.
@@ -38,8 +36,6 @@ Podcast Pools allows for podcast creators to capture value by having their fans 
 **Pool Contract:** Users deposit stablecoins to this contract and are given ticket tokens in return in a one to one ratio. This contract is in charge of maintaing user's balances and added them to yild earing protocols (Compound in this case). Lastly, this contract holds the NTF episodes as well and is the one that sends them to the winner.
 
 **Strategy Contract:** Controls where the interest from the deposited stablecoins is awarded to as well as the NFT epsidoes. However, the strategy contract is not able to touch a user's inital deposit, only the interest earned. The interest earned is given to the podcast creator and the NFT is given to the person that is drawn as the winner.
-
-<br>
 
 ## Token URI Format
 
@@ -64,8 +60,6 @@ For example: Querying IPFS with the hash QmQMZA7WZiZUVJqujJX2kbtUu53VmWaF7Phkwqa
 }
 ```
 
-<br>
-
 ## Contract URI
 
 The URI for the contact can be found here
@@ -73,8 +67,6 @@ The URI for the contact can be found here
 ```javascript
 contractURI = "ipfs://ipfs/QmdyQRNEFnjSX1VivhokGqnLgpq3oBxeStv6VJNdo3owZt";
 ```
-
-<br>
 
 ## Contract Addresses (Rinkeby)
 
