@@ -2,9 +2,13 @@
 
 _Win episode NFTs from your favorite Podcasts_
 
+<br>
+
 ## Description
 
-Podcast Pools allows for podcast creators to capture value by having their fans lock up Dai into a no loss lottery where the prize is an NFT that represents that week’s episode. Similar to Patreon, people can contribute money to creators they support, but instead of directly donating, they are instead giving the interest earned by their capital while it is locked into a v3 Pool Together pool for a chance to win a tokenized episode.
+Podcast Pools allows for podcast creators to capture value by having their fans lock up a stablecoin into a no loss lottery where the prize is an NFT that represents that week’s episode. Similar to Patreon, people can contribute money to creators they support, but instead of directly donating money, they are instead giving the interest earned by their assets for a chance to win a tokenized episode.
+
+<br>
 
 ## Resources Used
 
@@ -15,19 +19,35 @@ Podcast Pools allows for podcast creators to capture value by having their fans 
 -   Node/Express Server
 -   React Frontend
 
+<br>
+
 ## System Overview
+
+<br>
 
 ![alt text](https://github.com/anader123/podcast-pools/raw/master/diagram_images/add-diagram.png "Add Diagran")
 
-**a.** The server is listening to Podcast RSS feed and sees that a new episode has been added.
+**a.** The server is listening to a Podcast's [RSS feed](https://en.wikipedia.org/wiki/RSS) and sees that a new episode has been added.
 
-**b.** The serves then formats the recent episode data and uploads JSON metadata to IPFS.
+**b.** The serves then formats the recent episode data and uploads the metadata to IPFS.
 
-**c.** The server uses it's private key that has minting access to mint a new episode NFT to the pool contract's address. It creates the NFT with the IPFS hash of the metadata that was stored.
+**c.** The server uses it's private key to mint a new episode NFT to the pool contract's address. When the server creates the NFT, it points the token's metadata URI to the IPFS hash of the metadata for the new episode.
 
 **d.** The NFT contract mints and assigns ownership to the pool contract.
 
-**e.** Lastly, the server then calls a function on the strategy contract to let it know that an NFT episode has been added to the next prize round.
+**e.** Lastly, the server then calls a function on the strategy contract to let it know that an NFT episode needs to be added to the next prize round.
+
+<br>
+
+## Contract Structure
+
+**ERC721 Contract:** Contract that stores all the state and metadata pointers for the NFTs that have been created.
+
+**Pool Contract:** Users deposit stablecoins to this contract and are given ticket tokens in return in a one to one ratio. This contract is in charge of maintaing user's balances and added them to yild earing protocols (Compound in this case). Lastly, this contract holds the NTF episodes as well and is the one that sends them to the winner.
+
+**Strategy Contract:** Controls where the interest from the deposited stablecoins is awarded to as well as the NFT epsidoes. However, the strategy contract is not able to touch a user's inital deposit, only the interest earned. The interest earned is given to the podcast creator and the NFT is given to the person that is drawn as the winner.
+
+<br>
 
 ## Token URI Format
 
@@ -52,6 +72,8 @@ For example: Querying IPFS with the hash QmQMZA7WZiZUVJqujJX2kbtUu53VmWaF7Phkwqa
 }
 ```
 
+<br>
+
 ## Contract URI
 
 The URI for the contact can be found here
@@ -59,6 +81,8 @@ The URI for the contact can be found here
 ```javascript
 contractURI = "ipfs://ipfs/QmdyQRNEFnjSX1VivhokGqnLgpq3oBxeStv6VJNdo3owZt";
 ```
+
+<br>
 
 ## Contract Addresses (Rinkeby)
 
