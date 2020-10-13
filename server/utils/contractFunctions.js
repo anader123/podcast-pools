@@ -67,7 +67,10 @@ const startAndAwardPrize = async () => {
         if(!canStart) return;
         const startTx = await strategyContract.startAward();
         await startTx.wait();
-        await strategyContract.completeAward();
+        console.log(`Starting award process. TxHash: ${startTx.hash}`);
+        const completeTx = await strategyContract.completeAward();
+        await completeTx.wait();
+        console.log(`Completing award process. TxHash: ${completeTx.hash}`);
     } catch (error) {
         console.log('Error ocurred when trying to award the prize', error);
     }

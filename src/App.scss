@@ -1,0 +1,180 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+
+button {
+    cursor: pointer;
+    border-radius: 8px;
+    border: none;
+    outline: none;
+}
+.App {
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+    &__header {
+        color: #ffffff;
+        height: 75px;
+        background-color: #070707;
+        display: flex;
+        justify-content: center;
+        border-bottom: 1px solid #8a8a89e1;
+        .logo-container {
+            display: flex;
+            align-items: center;
+            h4 {
+                margin-left: 9px;
+                font-style: normal;
+                font-weight: 500;
+                font-size: 20px;
+                line-height: 30px;
+                display: flex;
+                align-items: center;
+                text-align: center;
+            }
+        }
+        .shortened-address {
+            display: none;
+        }
+    }
+    &__dashboard {
+        .top-info {
+            padding: 50px 30px 50px 30px;
+            background-color: #1e1e1f;
+            color: #ffffff;
+            .text {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                h2 {
+                    font-family: Poppins;
+                    font-style: normal;
+                    font-weight: 700;
+                    font-size: 32px;
+                    line-height: 51px;
+                    /* identical to box height */
+
+                    text-align: center;
+                }
+                .description-sentence {
+                    color: #9c9c9b;
+                    line-height: 1.35;
+                    font-size: 16px;
+                }
+                .description-paragraph {
+                    display: none;
+                }
+                img {
+                    height: 145px;
+                    width: 90px;
+                    margin: 40px 0;
+                }
+                .btn-container {
+                    display: flex;
+                    justify-content: space-between;
+                    width: 255px;
+                    button {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-family: Poppins;
+                        color: white;
+                        font-size: 14px;
+                        font-weight: 500;
+                        width: 120px;
+                        height: 45px;
+                    }
+                    .blue-btn {
+                        background-color: #1421a4;
+                    }
+                    .gray-btn {
+                        background-color: #36393a;
+                    }
+                }
+            }
+        }
+
+        .middle-info {
+            width: 100%;
+            padding: 15px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(180deg, #1e1e1f 50%, white 50%);
+
+            .middle-block__text {
+                font-family: Roboto, sans-serif;
+                background: #1e1e1f;
+                h3 {
+                    color: white;
+                    font-size: 30px;
+                    font-weight: 600;
+                    display: flex;
+                    justify-content: center;
+                    margin-bottom: 20px;
+                    span {
+                        margin-left: 5px;
+                    }
+                }
+                div {
+                    color: white;
+                    min-height: 400px;
+                    width: 290px;
+                    box-sizing: border-box;
+                    border-radius: 8px;
+                    background: black;
+                    border-bottom-left-radius: 8px;
+                    border-bottom-right-radius: 8px;
+
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    padding: 45px 25px;
+                    .ethhub-logo {
+                        height: 140px;
+                        width: 140px;
+                        border: 8px solid white;
+                        border-radius: 4px;
+                    }
+                    h5 {
+                        font-size: 20px;
+                        font-weight: 500;
+                        margin-top: 40px;
+                    }
+                    p {
+                        color: #9e9e9e;
+                        font-size: 14px;
+                        line-height: 1.38;
+                        width: 100%;
+                        margin: 2px 0;
+                    }
+                    .episode-info {
+                        margin: 16px 0;
+                    }
+                }
+            }
+        }
+    }
+    &__footer {
+        background-color: blue;
+    }
+}
+
+@media only screen and (min-width: 600px) {
+    .App {
+        &__header {
+            padding: 0 32px;
+            justify-content: space-between;
+            .shortened-address {
+                color: white;
+                display: flex;
+                align-items: center;
+                font-weight: 500;
+                font-size: 14px;
+            }
+        }
+        &__dashboard {
+        }
+
+        &__footer {
+        }
+    }
+}
