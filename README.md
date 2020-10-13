@@ -17,15 +17,17 @@ Podcast Pools allows for podcast creators to capture value by having their fans 
 
 ## System Overview
 
-a. The server is listening to Podcast RSS feed and sees that a new episode has been added.
+![alt text](https://github.com/anader123/podcast-pools/raw/master/diagram_images/add-diagram.png "Add Diagran")
 
-b. The serves then formats the recent episode data and uploads JSON metadata to IPFS.
+**a.** The server is listening to Podcast RSS feed and sees that a new episode has been added.
 
-c. The server uses it's private key that has minting access to mint a new episode NFT to the pool contract's address. It creates the NFT with the IPFS hash of the metadata that was stored.
+**b.** The serves then formats the recent episode data and uploads JSON metadata to IPFS.
 
-d. The NFT contract mints and assigns ownership to the pool contract.
+**c.** The server uses it's private key that has minting access to mint a new episode NFT to the pool contract's address. It creates the NFT with the IPFS hash of the metadata that was stored.
 
-e. Lastly, the server then calls a function on the strategy contract to let it know that an NFT episode has been added to the next prize round.
+**d.** The NFT contract mints and assigns ownership to the pool contract.
+
+**e.** Lastly, the server then calls a function on the strategy contract to let it know that an NFT episode has been added to the next prize round.
 
 ## Token URI Format
 
