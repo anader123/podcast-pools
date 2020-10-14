@@ -1,4 +1,5 @@
 import ethers from "ethers";
+import axios from "axios";
 
 // ABIs
 import PodPrizeStratAbi from "./abis/PodPoolStratV2.json";
@@ -70,7 +71,7 @@ export const getPrizePeriodRemaining = async () => {
         const minutes = Math.floor(
             totalTimeSeconds / 60 - (days * 24 * 60 + hours * 60)
         );
-        return `${days}D ${hours}H ${minutes}M`;
+        return `${days}d ${hours}h ${minutes}m`;
     } catch (error) {
         console.log(error);
         return "Time Remaining Error";
@@ -95,17 +96,16 @@ export const getERC20Balance = async (type, userAddress) => {
 };
 
 export const getCurrentNftPrizes = async () => {
-    const ipfsHashArray = [];
     try {
         const idArray = await strategyContract.getAwardErc721TokenIds(
             INTO_ETH_TOKEN_ADDRESS
         );
-        idArray.forEach(async (NftId) => {
-            let ipfsHash = await IntoEthToken.tokenURI(NftId);
-            ipfsHash = ipfsHash.slice(12); // remove the url from the hash
-            ipfsHashArray.push(ipfsHash);
-        });
-        return ipfsHashArray;
+        let ipfsHash = await IntoEthToken.tokenURI(idArray[0]);
+        ipfsHash = ipfsHash.slice(12); // remove the url from the hash
+        const result = await axios.get(
+            `https://ipfs.infura.io/ipfs/${ipfsHash}`
+        );
+        return result.data;
     } catch (error) {
         console.log(error);
     }

@@ -23,7 +23,7 @@ Podcast Pools allows for podcast creators to capture value by having their fans 
 
 **b.** The serves then formats the recent episode data and uploads the metadata to IPFS.
 
-**c.** The server uses it's private key to mint a new episode NFT to the pool contract's address. When the server creates the NFT, it points the token's metadata URI to the IPFS hash of the metadata for the new episode.
+**c.** The server uses it's private key to mint a new episode NFT to the pool contract's address. When the server creates the NFT, it points the [token's metadata URI ](https://docs.opensea.io/docs/metadata-standards) to the IPFS hash of the metadata for the new episode.
 
 **d.** The NFT contract mints and assigns ownership to the pool contract.
 
@@ -33,7 +33,7 @@ Podcast Pools allows for podcast creators to capture value by having their fans 
 
 **ERC721 Contract:** Contract that stores all the state and metadata pointers for the NFTs that have been created.
 
-**Pool Contract:** Users deposit stablecoins to this contract and are given ticket tokens in return in a one to one ratio. This contract is in charge of maintaing user's balances and added them to yild earing protocols (Compound in this case). Lastly, this contract holds the NTF episodes as well and is the one that sends them to the winner.
+**Pool Contract:** Users deposit stablecoins to this contract and are given ticket tokens in return in a one to one ratio. This contract is in charge of maintaing user's balances and added them to yield earing protocols (Compound in this case). Lastly, this contract holds the NTF episodes as well and is the one that sends them to the winner.
 
 **Strategy Contract:** Controls where the interest from the deposited stablecoins is awarded to as well as the NFT epsidoes. However, the strategy contract is not able to touch a user's inital deposit, only the interest earned. The interest earned is given to the podcast creator and the NFT is given to the person that is drawn as the winner.
 

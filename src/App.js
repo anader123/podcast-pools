@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "./App.scss";
 import logo from "./images/droplet-logo.svg";
 import ethLogo from "./images/eth-diamond-rainbow.png";
@@ -9,6 +9,7 @@ import {
     getERC20Balance,
     getPrizePeriodRemaining,
     getTotalTicketCount,
+    getCurrentNftPrizes,
 } from "./utils/contractFunctions";
 import { addressShortener } from "./utils/helperFunctions";
 
@@ -19,9 +20,13 @@ function App() {
     const [ticketBalance, setTicketBalance] = useState("0");
     const [totalSupply, setTotalSupply] = useState("0");
     const [timeRemaining, setTimeRemaining] = useState("0");
-
-    useEffect(() => {
-        loadContractData();
+    const [episodeData, setEpidsodeData] = useState({
+        name: "Loading...",
+        description: "",
+        attributes: [
+            { trait_type: "Date", value: "" },
+            { trait_type: "Duration", value: "" },
+        ],
     });
 
     const loadContractData = async () => {
@@ -33,6 +38,7 @@ function App() {
         await initializeContracts();
         const newTimeRemaining = await getPrizePeriodRemaining();
         loadErc20Data(userAddress);
+        await loadNftData();
 
         setTimeRemaining(newTimeRemaining);
         setShortAddress(shortAd);
@@ -47,6 +53,12 @@ function App() {
         setTotalSupply(newTotalSupply);
         setTicketBalance(ticketResult);
         setDaiBalance(daiResult);
+    };
+
+    const loadNftData = async () => {
+        const newEpisodeData = await getCurrentNftPrizes();
+        console.log(newEpisodeData);
+        setEpidsodeData(newEpisodeData);
     };
 
     return (
@@ -79,7 +91,12 @@ function App() {
                                 alt="ethLogo"
                             />
                             <div className="btn-container">
-                                <button className="blue-btn">Deposit</button>
+                                <button
+                                    className="blue-btn"
+                                    onClick={loadContractData}
+                                >
+                                    Deposit
+                                </button>
                                 <button className="gray-btn">Withdraw</button>
                             </div>
                         </div>
@@ -107,18 +124,15 @@ function App() {
                                 alt="ethHubLogo"
                             />
                             <div className="prizes__text">
-                                <h5>EthHub Weekly #133</h5>
+                                <h5>{episodeData.name}</h5>
                                 <p className="episode-info">
-                                    Kucoin Hacked for $150mn, State of EIP-1559,
-                                    eth2 Spardina launch, Optimism launches
-                                    testnet, Blocknative's mempool explorer and
-                                    exploring the Ethereum mempool.
+                                    {episodeData.description}
                                 </p>
                                 <p className="attribute">
-                                    Date: Tue, 08 Sep 2020
+                                    {`Release Date: ${episodeData.attributes[0].value}`}
                                 </p>
                                 <p className="attribute">
-                                    Episode Duration: 49:28
+                                    {`Duration: ${episodeData.attributes[1].value}`}
                                 </p>
                             </div>
                         </div>
