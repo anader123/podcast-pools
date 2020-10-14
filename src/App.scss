@@ -6,9 +6,11 @@ button {
     border: none;
     outline: none;
 }
+
 .App {
     box-sizing: border-box;
     font-family: "Poppins", sans-serif;
+
     &__header {
         color: #ffffff;
         height: 75px;
@@ -34,11 +36,15 @@ button {
             display: none;
         }
     }
+
     &__dashboard {
         .top-info {
-            padding: 50px 30px 50px 30px;
+            padding: 50px 30px;
             background-color: #1e1e1f;
             color: #ffffff;
+            .text--background-color {
+                background-color: #1e1e1f;
+            }
             .text {
                 display: flex;
                 flex-direction: column;
@@ -62,11 +68,12 @@ button {
                 .description-paragraph {
                     display: none;
                 }
-                img {
+                .eth-logo--mobile {
                     height: 145px;
                     width: 90px;
                     margin: 40px 0;
                 }
+
                 .btn-container {
                     display: flex;
                     justify-content: space-between;
@@ -90,6 +97,9 @@ button {
                     }
                 }
             }
+            .eth-logo__container {
+                display: none;
+            }
         }
 
         .middle-info {
@@ -102,7 +112,6 @@ button {
 
             .middle-block__text {
                 font-family: Roboto, sans-serif;
-                background: #1e1e1f;
                 h3 {
                     color: white;
                     font-size: 30px;
@@ -114,7 +123,7 @@ button {
                         margin-left: 5px;
                     }
                 }
-                div {
+                .prizes {
                     color: white;
                     min-height: 400px;
                     width: 290px;
@@ -123,6 +132,7 @@ button {
                     background: black;
                     border-bottom-left-radius: 8px;
                     border-bottom-right-radius: 8px;
+                    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 
                     display: flex;
                     flex-direction: column;
@@ -152,9 +162,44 @@ button {
                 }
             }
         }
+
+        .bottom-info {
+            margin: 15px 0;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+            .main-text-container {
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                .sub-text-container {
+                    width: 100%;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    margin-bottom: 35px;
+                    h6 {
+                        margin-bottom: 10px;
+                        font-size: 20px;
+                        font-weight: 600;
+                        color: rgb(58, 60, 61);
+                    }
+                    p {
+                        font-size: 22px;
+                        font-weight: 600;
+                    }
+                }
+            }
+        }
     }
+
     &__footer {
-        background-color: blue;
+        background-color: #1421a4;
+        height: 60px;
     }
 }
 
@@ -171,10 +216,141 @@ button {
                 font-size: 14px;
             }
         }
-        &__dashboard {
-        }
+    }
+}
 
+@media only screen and (min-width: 800px) {
+    .App {
+        &__dashboard {
+            .middle-info {
+                .middle-block__text {
+                    width: 80%;
+                    max-width: 900px;
+                    h3 {
+                        width: 100%;
+                        font-size: 35px;
+                        justify-content: flex-start;
+                    }
+                    .prizes {
+                        width: 100%;
+                        min-height: 300px;
+                        margin-left: auto;
+                        margin-right: auto;
+                        flex-direction: row-reverse;
+                        justify-content: space-between;
+                        padding: 25px 50px;
+                        .ethhub-logo {
+                            height: 175px;
+                            width: auto;
+                            margin-right: 10px;
+                        }
+                        &__text {
+                            width: 60%;
+                            h5 {
+                                margin: 0;
+                                font-size: 24px;
+                                font-weight: 600;
+                            }
+                            p {
+                                font-size: 16px;
+                                font-weight: 400;
+                            }
+                            .attribute {
+                                font-weight: 500;
+                            }
+                        }
+                    }
+                }
+            }
+            .bottom-info {
+                max-width: 900px;
+                width: 80%;
+                margin: 50px auto 50px auto;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                .main-text-container {
+                    display: flex;
+                    justify-content: space-between;
+                    width: 230px;
+                    .sub-text-container {
+                        display: flex;
+                        align-items: flex-start;
+                        h6 {
+                            font-size: 22px;
+                            width: 300px;
+                        }
+                        p {
+                            font-size: 30px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (min-width: 1000px) {
+    .App {
+        &__dashboard {
+            .top-info {
+                padding-top: 120px;
+                padding-bottom: 80px;
+                .text--background-color {
+                    display: flex;
+                    max-width: 900px;
+                    width: 80%;
+                    margin-left: auto;
+                    margin-right: auto;
+                    .text {
+                        display: flex;
+                        align-items: flex-start;
+                        h2 {
+                            font-size: 68px;
+                            font-weight: 600;
+                            margin-bottom: 16px;
+                        }
+                        .description-sentence {
+                            display: flex;
+                            justify-content: flex-start;
+                            color: white;
+                            font-size: 22px;
+                            font-weight: 400;
+                            margin-bottom: 18px;
+                        }
+                        .description-paragraph {
+                            display: flex;
+                            justify-content: flex-start;
+                            text-align: start;
+                            color: #9c9c9b;
+                            line-height: 1.6;
+                            font-size: 15px;
+                            font-weight: 300;
+                            width: 68%;
+                            margin-bottom: 60px;
+                        }
+                        .eth-logo--mobile {
+                            display: none;
+                        }
+                        .btn-container {
+                            width: 276px;
+                        }
+                    }
+                    .eth-logo__container {
+                        display: flex;
+                        height: 250px;
+                        .eth-logo--desktop {
+                            height: 100%;
+                            width: auto;
+                            margin-top: 20px;
+                        }
+                    }
+                }
+            }
+        }
         &__footer {
+            background-color: #1421a4;
+            height: 40px;
         }
     }
 }
