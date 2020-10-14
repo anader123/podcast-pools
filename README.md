@@ -6,7 +6,7 @@ _Win NFT episodes from your favorite Podcasts_
 
 Podcast Pools allows for podcast creators to capture value by having their fans lock up stablecoins into a no loss lottery where the prize is an NFT that represents that week’s episode. Similar to Patreon, people can contribute money to creators they support, but instead of directly donating money, they are instead giving the interest earned by their assets for a chance to win a tokenized episode.
 
-## Resources Used
+## Project Highlights
 
 -   PoolTogether v3 Contracts
 -   ERC721 Standard for NFTs
@@ -14,10 +14,11 @@ Podcast Pools allows for podcast creators to capture value by having their fans 
 -   Ethers.js
 -   Node/Express Server
 -   React Frontend
+-   Mobile Responsive
 
 ## System Overview
 
-![alt text](https://github.com/anader123/podcast-pools/raw/master/diagram_images/add-diagram.png "Add Diagran")
+![alt text](https://github.com/anader123/podcast-pools/raw/master/readme_images/add-diagram.png "Add Diagran")
 
 **a.** The server is listening to a Podcast's [RSS feed](https://en.wikipedia.org/wiki/RSS) and sees that a new episode has been added.
 
@@ -41,7 +42,11 @@ Podcast Pools allows for podcast creators to capture value by having their fans 
 
 ### Mobile
 
+![alt text](https://raw.githubusercontent.com/anader123/podcast-pools/master/readme_images/podpool-mobile.png "Mobile view")
+
 ### Desktop
+
+![alt text](https://raw.githubusercontent.com/anader123/podcast-pools/master/readme_images/podpool-desktop.png "Desktop view")
 
 ## Token URI Format
 
