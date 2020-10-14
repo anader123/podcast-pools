@@ -5,6 +5,7 @@ button {
     border-radius: 8px;
     border: none;
     outline: none;
+    color: white;
 }
 
 .App {
@@ -38,6 +39,9 @@ button {
     }
 
     &__dashboard {
+        .top-info--lengthen {
+            height: calc(100vh - 236px);
+        }
         .top-info {
             padding: 50px 30px;
             background-color: #1e1e1f;
@@ -56,8 +60,6 @@ button {
                     font-weight: 700;
                     font-size: 32px;
                     line-height: 51px;
-                    /* identical to box height */
-
                     text-align: center;
                 }
                 .description-sentence {
@@ -72,6 +74,15 @@ button {
                     height: 145px;
                     width: 90px;
                     margin: 40px 0;
+                }
+
+                .blue-btn {
+                    transition: 300ms;
+                    background-color: #1421a4;
+                }
+                .blue-btn:hover {
+                    transition: 300ms;
+                    background-color: #2230ce;
                 }
 
                 .btn-container {
@@ -89,11 +100,23 @@ button {
                         width: 120px;
                         height: 45px;
                     }
-                    .blue-btn {
-                        background-color: #1421a4;
-                    }
                     .gray-btn {
+                        transition: 300ms;
                         background-color: #36393a;
+                    }
+                    .gray-btn:hover {
+                        transition: 300ms;
+                        background-color: #565a5c;
+                    }
+                }
+                .connect-wallet-container {
+                    margin-top: 40px;
+                    button {
+                        margin-top: 20px;
+                        font-size: 18px;
+                        font-weight: 500;
+                        width: 200px;
+                        height: 60px;
                     }
                 }
             }
@@ -293,15 +316,19 @@ button {
 @media only screen and (min-width: 1000px) {
     .App {
         &__dashboard {
+            .top-info--lengthen {
+                height: calc(100vh - 300px);
+            }
             .top-info {
                 padding-top: 120px;
                 padding-bottom: 80px;
                 .text--background-color {
+                    margin: 50px auto 0 auto;
                     display: flex;
                     max-width: 900px;
                     width: 80%;
-                    margin-left: auto;
-                    margin-right: auto;
+                    // margin-left: auto;
+                    // margin-right: auto;
                     .text {
                         display: flex;
                         align-items: flex-start;
@@ -315,7 +342,7 @@ button {
                             justify-content: flex-start;
                             color: white;
                             font-size: 22px;
-                            font-weight: 400;
+                            font-weight: 300;
                             margin-bottom: 18px;
                         }
                         .description-paragraph {
@@ -324,9 +351,9 @@ button {
                             text-align: start;
                             color: #9c9c9b;
                             line-height: 1.6;
-                            font-size: 15px;
+                            font-size: 12px;
                             font-weight: 300;
-                            width: 68%;
+                            width: 70%;
                             margin-bottom: 60px;
                         }
                         .eth-logo--mobile {
@@ -335,6 +362,16 @@ button {
                         .btn-container {
                             width: 276px;
                         }
+                        .connect-wallet-container {
+                            margin-top: 80px;
+                            p {
+                                font-size: 22px;
+                                font-weight: 500;
+                            }
+                            button {
+                                margin-top: 40px;
+                            }
+                        }
                     }
                     .eth-logo__container {
                         display: flex;
@@ -342,7 +379,6 @@ button {
                         .eth-logo--desktop {
                             height: 100%;
                             width: auto;
-                            margin-top: 20px;
                         }
                     }
                 }
@@ -351,6 +387,12 @@ button {
         &__footer {
             background-color: #1421a4;
             height: 40px;
+        }
+        &__footer--white {
+            display: flex;
+            align-items: flex-end;
+            background-color: #ffffff;
+            height: 20px;
         }
     }
 }

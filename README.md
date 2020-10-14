@@ -37,6 +37,12 @@ Podcast Pools allows for podcast creators to capture value by having their fans 
 
 **Strategy Contract:** Controls where the interest from the deposited stablecoins is awarded to as well as the NFT epsidoes. However, the strategy contract is not able to touch a user's inital deposit, only the interest earned. The interest earned is given to the podcast creator and the NFT is given to the person that is drawn as the winner.
 
+## Application Views
+
+### Mobile
+
+### Desktop
+
 ## Token URI Format
 
 **URIs are formatted as ipfs://ipfs/[ipfsHash]**
@@ -59,6 +65,8 @@ For example: Querying IPFS with the hash QmQMZA7WZiZUVJqujJX2kbtUu53VmWaF7Phkwqa
     ]
 }
 ```
+
+You can view this asset [here](https://rinkeby.opensea.io/assets/0x6325764783626e233f5ff4f2d8d1f2bccd9d6105/1) on OpenSea.
 
 ## Contract URI
 

@@ -100,6 +100,15 @@ export const getCurrentNftPrizes = async () => {
         const idArray = await strategyContract.getAwardErc721TokenIds(
             INTO_ETH_TOKEN_ADDRESS
         );
+        if (idArray.length === 0)
+            return {
+                name: "New Prize Comming Soon",
+                description: "",
+                attributes: [
+                    { trait_type: "Date", value: "" },
+                    { trait_type: "Duration", value: "" },
+                ],
+            };
         let ipfsHash = await IntoEthToken.tokenURI(idArray[0]);
         ipfsHash = ipfsHash.slice(12); // remove the url from the hash
         const result = await axios.get(

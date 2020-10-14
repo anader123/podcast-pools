@@ -16,6 +16,7 @@ import { addressShortener } from "./utils/helperFunctions";
 function App() {
     const [address, setAddress] = useState("");
     const [shortAddress, setShortAddress] = useState("");
+    const [walletConnected, setWalletConnected] = useState(false);
     const [daiBalance, setDaiBalance] = useState("0");
     const [ticketBalance, setTicketBalance] = useState("0");
     const [totalSupply, setTotalSupply] = useState("0");
@@ -43,6 +44,7 @@ function App() {
         setTimeRemaining(newTimeRemaining);
         setShortAddress(shortAd);
         setAddress(userAddress);
+        setWalletConnected(true);
     };
 
     const loadErc20Data = async (userAddress) => {
@@ -71,7 +73,13 @@ function App() {
                 <h6 className="shortened-address">{shortAddress}</h6>
             </div>
             <div className="App__dashboard">
-                <div className="top-info">
+                <div
+                    className={
+                        walletConnected
+                            ? "top-info"
+                            : "top-info top-info--lengthen"
+                    }
+                >
                     <div className="text--background-color">
                         <div className="text">
                             <h2>Into the Ether</h2>
@@ -90,15 +98,31 @@ function App() {
                                 src={ethLogo}
                                 alt="ethLogo"
                             />
-                            <div className="btn-container">
-                                <button
-                                    className="blue-btn"
-                                    onClick={loadContractData}
-                                >
-                                    Deposit
-                                </button>
-                                <button className="gray-btn">Withdraw</button>
-                            </div>
+                            {walletConnected ? (
+                                <div className="btn-container">
+                                    <button className="blue-btn">
+                                        Deposit
+                                    </button>
+                                    <button className="gray-btn">
+                                        Withdraw
+                                    </button>
+                                </div>
+                            ) : (
+                                <div className="connect-wallet-container">
+                                    <p>
+                                        Deposit DAI for a chance to win{" "}
+                                        <span role="img" aria-label="surprise">
+                                            🎉
+                                        </span>
+                                    </p>
+                                    <button
+                                        className="blue-btn"
+                                        onClick={loadContractData}
+                                    >
+                                        Connect Wallet
+                                    </button>
+                                </div>
+                            )}
                         </div>
                         <div className="eth-logo__container">
                             <img
@@ -109,79 +133,92 @@ function App() {
                         </div>
                     </div>
                 </div>
-                <div className="middle-info">
-                    <div className="middle-block__text">
-                        <h3>
-                            Current Prize{" "}
-                            <span role="img" aria-label="trophy">
-                                🏆
-                            </span>
-                        </h3>
-                        <div className="prizes">
-                            <img
-                                className="ethhub-logo"
-                                src={ethHubLogo}
-                                alt="ethHubLogo"
-                            />
-                            <div className="prizes__text">
-                                <h5>{episodeData.name}</h5>
-                                <p className="episode-info">
-                                    {episodeData.description}
-                                </p>
-                                <p className="attribute">
-                                    {`Release Date: ${episodeData.attributes[0].value}`}
-                                </p>
-                                <p className="attribute">
-                                    {`Duration: ${episodeData.attributes[1].value}`}
-                                </p>
+                {walletConnected ? (
+                    <div>
+                        <div className="middle-info">
+                            <div className="middle-block__text">
+                                <h3>
+                                    Current Prize{" "}
+                                    <span role="img" aria-label="trophy">
+                                        🏆
+                                    </span>
+                                </h3>
+                                <div className="prizes">
+                                    <img
+                                        className="ethhub-logo"
+                                        src={ethHubLogo}
+                                        alt="ethHubLogo"
+                                    />
+                                    <div className="prizes__text">
+                                        <h5>{episodeData.name}</h5>
+                                        <p className="episode-info">
+                                            {episodeData.description}
+                                        </p>
+                                        <p className="attribute">
+                                            {`Release Date: ${episodeData.attributes[0].value}`}
+                                        </p>
+                                        <p className="attribute">
+                                            {`Duration: ${episodeData.attributes[1].value}`}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="bottom-info">
+                            <div className="main-text-container">
+                                <div className="sub-text-container">
+                                    <h6>
+                                        Total Tickets{" "}
+                                        <span role="img" aria-label="ticket">
+                                            🎟
+                                        </span>
+                                    </h6>
+                                    <p>{totalSupply} EHM</p>
+                                </div>
+                                <div className="sub-text-container">
+                                    <h6>
+                                        Your Ticket Balance{" "}
+                                        <span role="img" aria-label="balance">
+                                            ⚖️
+                                        </span>
+                                    </h6>
+                                    <p>{ticketBalance} EHM</p>
+                                </div>
+                            </div>
+                            <div className="main-text-container ">
+                                <div className="sub-text-container">
+                                    <h6>
+                                        Ending In{" "}
+                                        <span role="img" aria-label="clock">
+                                            🕒
+                                        </span>
+                                    </h6>
+                                    <p>{timeRemaining}</p>
+                                </div>
+                                <div className="sub-text-container">
+                                    <h6>
+                                        Your Dai Balance{" "}
+                                        <span
+                                            role="img"
+                                            aria-label="money-wings"
+                                        >
+                                            💸
+                                        </span>
+                                    </h6>
+                                    <p>{daiBalance} DAI</p>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div className="bottom-info">
-                    <div className="main-text-container">
-                        <div className="sub-text-container">
-                            <h6>
-                                Total Tickets{" "}
-                                <span role="img" aria-label="ticket">
-                                    🎟
-                                </span>
-                            </h6>
-                            <p>{totalSupply} EHM</p>
-                        </div>
-                        <div className="sub-text-container">
-                            <h6>
-                                Your Ticket Balance{" "}
-                                <span role="img" aria-label="balance">
-                                    ⚖️
-                                </span>
-                            </h6>
-                            <p>{ticketBalance} EHM</p>
-                        </div>
-                    </div>
-                    <div className="main-text-container ">
-                        <div className="sub-text-container">
-                            <h6>
-                                Ending In{" "}
-                                <span role="img" aria-label="clock">
-                                    🕒
-                                </span>
-                            </h6>
-                            <p>{timeRemaining}</p>
-                        </div>
-                        <div className="sub-text-container">
-                            <h6>
-                                Your Dai Balance{" "}
-                                <span role="img" aria-label="money-wings">
-                                    💸
-                                </span>
-                            </h6>
-                            <p>{daiBalance} DAI</p>
-                        </div>
-                    </div>
-                </div>
+                ) : (
+                    <div></div>
+                )}
             </div>
-            <div className="App__footer"></div>
+            <div
+                className={
+                    walletConnected ? "App__footer" : "App__footer--white"
+                }
+            ></div>
         </div>
     );
 }
