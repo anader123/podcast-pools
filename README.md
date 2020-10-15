@@ -4,7 +4,7 @@ _Win NFT episodes from your favorite Podcasts_
 
 ## Description
 
-Podcast Pools allows for podcast creators to capture value by having their fans lock up stablecoins into a no loss lottery where the prize is an NFT that represents that week’s episode. Similar to Patreon, people can contribute money to creators they support, but instead of directly donating money, they are instead giving the interest earned by their assets for a chance to win a tokenized episode.
+Podcast Pools allows for podcast creators to capture value by having their fans lock up stablecoins into a [no loss lottery](https://en.wikipedia.org/wiki/Prize-linked_savings_account) where the prize is an NFT that represents that week’s episode. Similar to Patreon, people can contribute to creators they support, but instead of directly donating money, they are instead giving the interest earned by their assets for a chance to win a tokenized episode.
 
 ## Project Highlights
 
@@ -75,7 +75,7 @@ You can view this asset [here](https://rinkeby.opensea.io/assets/0x6325764783626
 
 ## Contract URI
 
-The URI for the contact can be found here
+The URI for the contract can be found at the IPFS hash below
 
 ```javascript
 contractURI = "ipfs://ipfs/QmdyQRNEFnjSX1VivhokGqnLgpq3oBxeStv6VJNdo3owZt";

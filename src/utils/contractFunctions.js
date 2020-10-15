@@ -7,6 +7,9 @@ import PodPrizePoolAbi from "./abis/PrizePool.json";
 import IntoEthTokenAbi from "./abis/IntoTheEther.json";
 import ERC20Abi from "./abis/ERC20.json";
 
+// Helper Function
+import { txHashShortener } from "./helperFunctions";
+
 // Contracts
 let strategyContract;
 let poolContract;
@@ -78,23 +81,6 @@ export const getPrizePeriodRemaining = async () => {
     }
 };
 
-export const getERC20Balance = async (type, userAddress) => {
-    let tokenContract;
-    if (type === undefined || userAddress === undefined) {
-        console.log("Invalid type or address provided");
-    }
-    type === "DAI" ? (tokenContract = DaiToken) : (tokenContract = TicketToken);
-    try {
-        const weiBalance = await tokenContract.balanceOf(userAddress);
-        const formattedBal = ethers.utils.formatUnits(weiBalance, 18);
-        const roundedBal = parseFloat(formattedBal).toFixed(2);
-        return roundedBal;
-    } catch (error) {
-        console.log(error);
-        return `Balance Error for ${type}`;
-    }
-};
-
 export const getCurrentNftPrizes = async () => {
     try {
         const idArray = await strategyContract.getAwardErc721TokenIds(
@@ -120,7 +106,78 @@ export const getCurrentNftPrizes = async () => {
     }
 };
 
-export const depositDaiToPool = async (userAddress, value) => {
+export const getERC20Balance = async (type, userAddress) => {
+    let tokenContract;
+    if (type === undefined || userAddress === undefined) {
+        console.log("Invalid type or address provided");
+    }
+    type === "DAI" ? (tokenContract = DaiToken) : (tokenContract = TicketToken);
+    try {
+        const weiBalance = await tokenContract.balanceOf(userAddress);
+        const formattedBal = ethers.utils.formatUnits(weiBalance, 18);
+        const roundedBal = parseFloat(formattedBal).toFixed(2);
+        return roundedBal;
+    } catch (error) {
+        console.log(error);
+        return `Balance Error for ${type}`;
+    }
+};
+
+export const getERC20Allowance = async (type, userAddress) => {
+    let tokenContract;
+    if (type === undefined || userAddress === undefined) {
+        console.log("Invalid type or address provided");
+    }
+    if (type === "DAI") tokenContract = DaiToken;
+    else if (type === "EHM") tokenContract = TicketToken;
+    else return window.alert("Error Invalid Token Type");
+
+    try {
+        const weiBalance = await tokenContract.allowance(
+            userAddress,
+            PRIZE_POOL_ADDRESS
+        );
+        const formattedBal = ethers.utils.formatUnits(weiBalance, 18);
+        const roundedBal = parseFloat(formattedBal).toFixed(2);
+        return roundedBal;
+    } catch (error) {
+        console.log(error);
+        return `Balance Error for ${type}`;
+    }
+};
+
+export const approveToken = async (type, setScene) => {
+    let tokenContract;
+    if (type === undefined) {
+        console.log("Invalid type");
+    }
+
+    if (type === "DAI") tokenContract = DaiToken;
+    else if (type === "EHM") tokenContract = TicketToken;
+    else return window.alert("Error Invalid Token Type");
+
+    try {
+        console.log(DaiToken);
+        const weiValue = ethers.utils.parseUnits("1000000", 18);
+        const approveTx = await tokenContract.approve(
+            PRIZE_POOL_ADDRESS,
+            weiValue
+        );
+        setScene(1);
+        await approveTx.wait();
+    } catch (error) {
+        console.log(error);
+        window.alert("Erorr granting allowance");
+    }
+};
+
+export const depositDaiToPool = async (
+    userAddress,
+    value,
+    setScene,
+    setTxHash,
+    setShortTxHash
+) => {
     try {
         const weiValue = ethers.utils.parseUnits(value, 18);
         const depositTx = await poolContract.depositTo(
@@ -129,8 +186,12 @@ export const depositDaiToPool = async (userAddress, value) => {
             TICKET_TOKEN_ADDRESS,
             REFERRER_ADDRESS
         );
+        setTxHash(depositTx.hash);
+        const shortTxHash = txHashShortener(depositTx.hash);
+        setShortTxHash(shortTxHash);
+        setScene(2);
         await depositTx.wait();
-        return depositTx.hash;
+        setScene(3);
     } catch (error) {
         console.log(error);
         window.alert("There was an error depositing the Dai");
@@ -142,6 +203,7 @@ export const withdrawDaiFromPool = async (userAddress, value) => {
         const weiValue = ethers.utils.parseUnits(value, 18);
         //Max fee that the user is willing to pay if withdraw early
         const maxFee = weiValue * 0.1;
+        TicketToken.approve(PRIZE_POOL_ADDRESS, weiValue);
         const withdrawTx = poolContract.withdrawInstantlyFrom(
             userAddress,
             weiValue,

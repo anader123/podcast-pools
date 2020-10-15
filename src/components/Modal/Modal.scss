@@ -1,0 +1,117 @@
+.modal-wrapper {
+    background-color: rgba(255, 255, 255, 0.445);
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    z-index: 10;
+    .modal {
+        position: fixed;
+        top: 40%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 96%;
+        height: 300px;
+        background-color: #070707;
+        border-radius: 4px;
+        color: white;
+        .exit-btn {
+            background-color: transparent;
+            cursor: pointer;
+            position: absolute;
+            right: 5px;
+            top: 5px;
+            outline: none;
+        }
+        .header {
+            height: 80px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-size: 26px;
+            font-weight: 600;
+            .white-line {
+                width: 50px;
+                height: 3px;
+                background: white;
+                margin-top: 10px;
+            }
+        }
+        .body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 130px;
+            img {
+                height: 50%;
+                width: auto;
+                margin: 15px 0 10px 0;
+            }
+            input {
+                width: 200px;
+                height: 28px;
+                padding-left: 8px;
+                outline: none;
+            }
+            p {
+                margin-top: 10px;
+                width: 208px;
+                height: 28px;
+                color: #999999;
+            }
+            a {
+                margin-top: 20px;
+                width: 208px;
+                height: 28px;
+                color: #999999;
+                text-decoration: none;
+                transition: 300ms;
+            }
+            a:hover {
+                transition: 300ms;
+                color: rgb(218, 218, 218);
+            }
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 0;
+            height: 80px;
+            background: #1d1e1f;
+            width: 100%;
+            border-top: 1px solid white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            button {
+                cursor: pointer;
+                width: 30%;
+                font-size: 16px;
+                font-weight: 500;
+                border-radius: 8px;
+                border: none;
+                outline: none;
+                color: white;
+                transition: 300ms;
+                background-color: #1421a4;
+                padding: 12px;
+            }
+            button:hover {
+                transition: 300ms;
+                background-color: #2230ce;
+            }
+        }
+    }
+}
+
+@media only screen and (min-width: 600px) {
+    .modal-wrapper {
+        .modal {
+            width: 500px;
+        }
+    }
+}

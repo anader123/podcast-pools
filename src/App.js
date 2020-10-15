@@ -4,12 +4,15 @@ import logo from "./images/droplet-logo.svg";
 import ethLogo from "./images/eth-diamond-rainbow.png";
 import ethHubLogo from "./images/ethHubLogo.png";
 
+import Modal from "./components/Modal/DepositModal";
+
 import {
     initializeContracts,
     getERC20Balance,
     getPrizePeriodRemaining,
     getTotalTicketCount,
     getCurrentNftPrizes,
+    getERC20Allowance,
 } from "./utils/contractFunctions";
 import { addressShortener } from "./utils/helperFunctions";
 
@@ -17,8 +20,12 @@ function App() {
     const [address, setAddress] = useState("");
     const [shortAddress, setShortAddress] = useState("");
     const [walletConnected, setWalletConnected] = useState(false);
+
     const [daiBalance, setDaiBalance] = useState("0");
     const [ticketBalance, setTicketBalance] = useState("0");
+    const [daiAllowance, setDaiAllowance] = useState("0");
+    const [ticketAllowance, setTicketAllowance] = useState("0");
+
     const [totalSupply, setTotalSupply] = useState("0");
     const [timeRemaining, setTimeRemaining] = useState("0");
     const [episodeData, setEpidsodeData] = useState({
@@ -29,6 +36,8 @@ function App() {
             { trait_type: "Duration", value: "" },
         ],
     });
+    const [modalState, setModalState] = useState(false);
+    const [scene, setScene] = useState(3);
 
     const loadContractData = async () => {
         if (window.ethereum.networkVersion !== "4")
@@ -48,29 +57,63 @@ function App() {
     };
 
     const loadErc20Data = async (userAddress) => {
-        const ticketResult = await getERC20Balance("EHM", userAddress);
-        const daiResult = await getERC20Balance("DAI", userAddress);
+        const ticketBalanceResult = await getERC20Balance("EHM", userAddress);
+        const daiBalanceResult = await getERC20Balance("DAI", userAddress);
+        const ticketAllowanceResult = await getERC20Allowance(
+            "EHM",
+            userAddress
+        );
+        const daiAllowanceResult = await getERC20Allowance("DAI", userAddress);
         const newTotalSupply = await getTotalTicketCount();
 
         setTotalSupply(newTotalSupply);
-        setTicketBalance(ticketResult);
-        setDaiBalance(daiResult);
+        setTicketBalance(ticketBalanceResult);
+        setTicketAllowance(ticketAllowanceResult);
+        setDaiAllowance(daiAllowanceResult);
+        setDaiBalance(daiBalanceResult);
     };
 
     const loadNftData = async () => {
         const newEpisodeData = await getCurrentNftPrizes();
-        console.log(newEpisodeData);
         setEpidsodeData(newEpisodeData);
+    };
+
+    const openDepositModal = () => {
+        if (+daiAllowance > 0) {
+            setScene(1);
+        }
+        setModalState(true);
+    };
+
+    const closeModal = () => {
+        setScene(0);
+        setModalState(false);
     };
 
     return (
         <div className="App">
+            <Modal
+                modalState={modalState}
+                daiBalance={daiBalance}
+                closeModal={closeModal}
+                scene={scene}
+                setScene={setScene}
+                userAddress={address}
+                loadErc20Data={loadErc20Data}
+            />
             <div className="App__header">
                 <div className="logo-container">
                     <img src={logo} alt="drop-logo" />
                     <h4>Podcast Pools</h4>
                 </div>
-                <h6 className="shortened-address">{shortAddress}</h6>
+                <a
+                    className="shortened-address"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href={`https://rinkeby.etherscan.io/address/${address}`}
+                >
+                    {shortAddress}
+                </a>
             </div>
             <div className="App__dashboard">
                 <div
@@ -100,7 +143,10 @@ function App() {
                             />
                             {walletConnected ? (
                                 <div className="btn-container">
-                                    <button className="blue-btn">
+                                    <button
+                                        className="blue-btn"
+                                        onClick={openDepositModal}
+                                    >
                                         Deposit
                                     </button>
                                     <button className="gray-btn">
