@@ -5,6 +5,8 @@ import ethLogo from "./images/eth-diamond-rainbow.png";
 import ethHubLogo from "./images/ethHubLogo.png";
 
 import Modal from "./components/Modal/DepositModal";
+import Web3Modal from "web3modal";
+import Portis from "@portis/web3";
 
 import {
     initializeContracts,
@@ -15,6 +17,28 @@ import {
     getERC20Allowance,
 } from "./utils/contractFunctions";
 import { addressShortener } from "./utils/helperFunctions";
+
+const providerOptions = {
+    portis: {
+        package: Portis,
+        options: {
+            id: process.env.REACT_APP_PORTIS_ID,
+        },
+    },
+};
+
+const web3Modal = new Web3Modal({
+    network: "rinkeby",
+    cacheProvider: true,
+    providerOptions,
+    theme: {
+        background: "rgb(39, 49, 56)",
+        main: "rgb(199, 199, 199)",
+        secondary: "rgb(136, 136, 136)",
+        border: "rgba(195, 195, 195, 0.14)",
+        hover: "black",
+    },
+});
 
 function App() {
     const [address, setAddress] = useState("");
@@ -37,23 +61,28 @@ function App() {
         ],
     });
     const [modalState, setModalState] = useState(false);
-    const [scene, setScene] = useState(3);
+    const [scene, setScene] = useState(0);
 
     const loadContractData = async () => {
-        if (window.ethereum.networkVersion !== "4")
-            return window.alert("Please change to Rinkeby");
-        const addresses = await window.ethereum.enable();
-        const userAddress = addresses[0];
-        const shortAd = addressShortener(userAddress);
-        await initializeContracts();
-        const newTimeRemaining = await getPrizePeriodRemaining();
-        loadErc20Data(userAddress);
-        await loadNftData();
+        const result = await web3Modal._toggleModal();
 
-        setTimeRemaining(newTimeRemaining);
-        setShortAddress(shortAd);
-        setAddress(userAddress);
-        setWalletConnected(true);
+        web3Modal.on("connect", async (provider) => {
+            if (window.ethereum.networkVersion !== "4")
+                return window.alert("Please change to Rinkeby");
+            const userAddress = await initializeContracts(provider);
+            // const addresses = await window.ethereum.enable();
+            // const userAddress = addresses[0];
+
+            const shortAd = addressShortener(userAddress);
+            const newTimeRemaining = await getPrizePeriodRemaining();
+            loadErc20Data(userAddress);
+            await loadNftData();
+
+            setTimeRemaining(newTimeRemaining);
+            setShortAddress(shortAd);
+            setAddress(userAddress);
+            setWalletConnected(true);
+        });
     };
 
     const loadErc20Data = async (userAddress) => {

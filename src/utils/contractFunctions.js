@@ -26,10 +26,12 @@ const TICKET_TOKEN_ADDRESS = "0x8bEa329655C9809355922Ac70fd4B0E51ce3FBd8";
 
 const REFERRER_ADDRESS = "0xec8b449D4cedcc1BF688EAA40B7dFafd6d2D00DC";
 
-export const initializeContracts = () => {
+export const initializeContracts = async (providerz) => {
     try {
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const provider = new ethers.providers.Web3Provider(providerz);
+        // const provider = new ethers.providers.Web3Provider(window.ethereum);
         const signer = provider.getSigner();
+        const userAddress = await signer.getAddress();
         strategyContract = new ethers.Contract(
             PRIZE_STRAT_ADDRESS,
             PodPrizeStratAbi.abi,
@@ -51,6 +53,7 @@ export const initializeContracts = () => {
             ERC20Abi.abi,
             signer
         );
+        return userAddress;
     } catch (error) {
         throw new Error(`No injected ethereum provider: ${error}`);
     }

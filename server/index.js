@@ -42,9 +42,7 @@ const checkRssAndMint = async () => {
 };
 
 startAndAwardPrize();
-// checkRssAndMint();
-
-getPodEpisodeData(0);
+getPodEpisodeData(2);
 
 // Server Listening
 app.listen(process.env.SERVER_PORT, () =>

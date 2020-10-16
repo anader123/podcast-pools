@@ -12,6 +12,7 @@ Podcast Pools allows for podcast creators to capture value by having their fans 
 -   ERC721 Standard for NFTs
 -   IPFS for NFT metadata storage
 -   Ethers.js
+-   Portis Login
 -   Node/Express Server
 -   React Frontend
 -   Mobile Responsive
@@ -22,7 +23,7 @@ Podcast Pools allows for podcast creators to capture value by having their fans 
 
 **a.** The server is listening to a Podcast's [RSS feed](https://en.wikipedia.org/wiki/RSS) and sees that a new episode has been added.
 
-**b.** The serves then formats the recent episode data and uploads the metadata to IPFS.
+**b.** The serves then formats the recent episode data and uploads the metadata to [IPFS](https://ipfs.io/#why).
 
 **c.** The server uses it's private key to mint a new episode NFT to the pool contract's address. When the server creates the NFT, it points the [token's metadata URI ](https://docs.opensea.io/docs/metadata-standards) to the IPFS hash of the metadata for the new episode.
 
