@@ -1,6 +1,6 @@
 pragma solidity 0.6.12;
 
-// // import "@pooltogether/pooltogether-contracts/contracts/prize-strategy/PeriodicPrizeStrategy.sol";
+import "@pooltogether/pooltogether-contracts/contracts/prize-strategy/PeriodicPrizeStrategy.sol";
 
 contract PodPoolStrat is PeriodicPrizeStrategy {
   address private podCreator;

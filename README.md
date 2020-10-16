@@ -13,6 +13,7 @@ Podcast Pools allows for podcast creators to capture value by having their fans 
 -   IPFS for NFT metadata storage
 -   Ethers.js
 -   Portis Login
+-   Server's Web3 Provider is powered by Pocket Network
 -   Node/Express Server
 -   React Frontend
 -   Mobile Responsive
