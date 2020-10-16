@@ -179,7 +179,8 @@ export const depositDaiToPool = async (
     value,
     setScene,
     setTxHash,
-    setShortTxHash
+    setShortTxHash,
+    loadErc20Data
 ) => {
     try {
         const weiValue = ethers.utils.parseUnits(value, 18);
@@ -195,26 +196,40 @@ export const depositDaiToPool = async (
         setScene(2);
         await depositTx.wait();
         setScene(3);
+        loadErc20Data(userAddress);
     } catch (error) {
         console.log(error);
         window.alert("There was an error depositing the Dai");
     }
 };
 
-export const withdrawDaiFromPool = async (userAddress, value) => {
+export const withdrawDaiFromPool = async (
+    userAddress,
+    value,
+    setScene,
+    setTxHash,
+    setShortTxHash,
+    loadErc20Data
+) => {
     try {
         const weiValue = ethers.utils.parseUnits(value, 18);
+
         //Max fee that the user is willing to pay if withdraw early
-        const maxFee = weiValue * 0.1;
-        TicketToken.approve(PRIZE_POOL_ADDRESS, weiValue);
-        const withdrawTx = poolContract.withdrawInstantlyFrom(
+        const maxFee = (+value * 0.1).toString();
+        const weiMaxFee = ethers.utils.parseUnits(maxFee, 18);
+        const withdrawTx = await poolContract.withdrawInstantlyFrom(
             userAddress,
             weiValue,
             TICKET_TOKEN_ADDRESS,
-            maxFee
+            weiMaxFee
         );
+        setTxHash(withdrawTx.hash);
+        const shortTxHash = txHashShortener(withdrawTx.hash);
+        setShortTxHash(shortTxHash);
+        setScene(2);
         await withdrawTx.wait();
-        return withdrawTx.hash;
+        setScene(3);
+        loadErc20Data(userAddress);
     } catch (error) {
         console.log(error);
         window.alert("There was an error withdrawing the Dai");

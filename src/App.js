@@ -4,7 +4,8 @@ import logo from "./images/droplet-logo.svg";
 import ethLogo from "./images/eth-diamond-rainbow.png";
 import ethHubLogo from "./images/ethHubLogo.png";
 
-import Modal from "./components/Modal/DepositModal";
+import DepositModal from "./components/Modal/DepositModal";
+import WithdrawModal from "./components/Modal/WithdrawModal";
 import Web3Modal from "web3modal";
 import Portis from "@portis/web3";
 
@@ -60,29 +61,36 @@ function App() {
             { trait_type: "Duration", value: "" },
         ],
     });
-    const [modalState, setModalState] = useState(false);
-    const [scene, setScene] = useState(0);
+    const [depositModalState, setDepositModalState] = useState(false);
+    const [depositScene, setDepositScene] = useState(2);
 
-    const loadContractData = async () => {
-        const result = await web3Modal._toggleModal();
+    const [withdrawModalState, setWithdrawModalState] = useState(false);
+    const [withdrawScene, setWithdrawScene] = useState(2);
+
+    const connectWallet = async () => {
+        await web3Modal._toggleModal();
 
         web3Modal.on("connect", async (provider) => {
-            if (window.ethereum.networkVersion !== "4")
-                return window.alert("Please change to Rinkeby");
-            const userAddress = await initializeContracts(provider);
-            // const addresses = await window.ethereum.enable();
-            // const userAddress = addresses[0];
-
-            const shortAd = addressShortener(userAddress);
-            const newTimeRemaining = await getPrizePeriodRemaining();
-            loadErc20Data(userAddress);
-            await loadNftData();
-
-            setTimeRemaining(newTimeRemaining);
-            setShortAddress(shortAd);
-            setAddress(userAddress);
-            setWalletConnected(true);
+            loadContractData(provider);
         });
+    };
+
+    const loadContractData = async (provider) => {
+        if (window.ethereum.networkVersion !== "4")
+            return window.alert("Please change to Rinkeby");
+        const userAddress = await initializeContracts(provider);
+        // const addresses = await window.ethereum.enable();
+        // const userAddress = addresses[0];
+
+        const shortAd = addressShortener(userAddress);
+        const newTimeRemaining = await getPrizePeriodRemaining();
+        loadErc20Data(userAddress);
+        await loadNftData();
+
+        setTimeRemaining(newTimeRemaining);
+        setShortAddress(shortAd);
+        setAddress(userAddress);
+        setWalletConnected(true);
     };
 
     const loadErc20Data = async (userAddress) => {
@@ -108,25 +116,47 @@ function App() {
     };
 
     const openDepositModal = () => {
-        if (+daiAllowance > 0) {
-            setScene(1);
-        }
-        setModalState(true);
+        // if (+daiAllowance > 0) {
+        //     setDepositScene(1);
+        // }
+        console.log(daiAllowance);
+        setDepositModalState(true);
     };
 
-    const closeModal = () => {
-        setScene(0);
-        setModalState(false);
+    const closeDepositModal = () => {
+        setDepositScene(0);
+        setDepositModalState(false);
+    };
+
+    const openWithdrawModal = () => {
+        // if (+ticketAllowance > 0) {
+        //     setWithdrawScene(1);
+        // }
+        setWithdrawModalState(true);
+    };
+
+    const closeWithdrawModal = () => {
+        setWithdrawScene(0);
+        setWithdrawModalState(false);
     };
 
     return (
         <div className="App">
-            <Modal
-                modalState={modalState}
+            <DepositModal
+                depositModalState={depositModalState}
                 daiBalance={daiBalance}
-                closeModal={closeModal}
-                scene={scene}
-                setScene={setScene}
+                closeDepositModal={closeDepositModal}
+                depositScene={depositScene}
+                setDepositScene={setDepositScene}
+                userAddress={address}
+                loadErc20Data={loadErc20Data}
+            />
+            <WithdrawModal
+                withdrawModalState={withdrawModalState}
+                ticketBalance={ticketBalance}
+                closeWithdrawModal={closeWithdrawModal}
+                setWithdrawScene={setWithdrawScene}
+                withdrawScene={withdrawScene}
                 userAddress={address}
                 loadErc20Data={loadErc20Data}
             />
@@ -178,7 +208,10 @@ function App() {
                                     >
                                         Deposit
                                     </button>
-                                    <button className="gray-btn">
+                                    <button
+                                        className="gray-btn"
+                                        onClick={openWithdrawModal}
+                                    >
                                         Withdraw
                                     </button>
                                 </div>
@@ -192,7 +225,7 @@ function App() {
                                     </p>
                                     <button
                                         className="blue-btn"
-                                        onClick={loadContractData}
+                                        onClick={connectWallet}
                                     >
                                         Connect Wallet
                                     </button>

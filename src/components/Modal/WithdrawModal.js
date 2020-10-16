@@ -1,37 +1,81 @@
 import React, { useState } from "react";
 import "./Modal.scss";
+
+// Images
 import X from "../../images/x.svg";
+import approveImage from "../../images/approve-contract.svg";
+import clock from "../../images/clock.svg";
+import check from "../../images/check-mark.svg";
+
+import {
+    approveToken,
+    withdrawDaiFromPool,
+} from "../../utils/contractFunctions";
 
 export default function Modal(props) {
-    const { daiBalance, setModalState, modalState } = props;
-    const [scene, setScene] = useState(3);
+    const {
+        ticketBalance,
+        withdrawModalState,
+        closeWithdrawModal,
+        withdrawScene,
+        setWithdrawScene,
+        userAddress,
+        loadErc20Data,
+    } = props;
+    const [txHash, setTxHash] = useState("0xcccc222cf1faaa1111111111122222");
+    const [shortTxHash, setShortTxHash] = useState("0x43a...32B");
+    const [withdrawAmount, setWithdrawAmount] = useState("0");
 
-    const closeModal = () => {
-        setScene(0);
-        setModalState(false);
+    const confirmApproveTicket = () => {
+        approveToken("EHM", setWithdrawScene);
     };
 
-    if (!modalState) return null;
+    const handleChange = (e) => {
+        let value = e.target.value;
+        value.toString();
+        setWithdrawAmount(value);
+    };
 
-    switch (scene) {
+    const confirmWithdrawDai = async () => {
+        await withdrawDaiFromPool(
+            userAddress,
+            withdrawAmount,
+            setWithdrawScene,
+            setTxHash,
+            setShortTxHash,
+            loadErc20Data
+        );
+    };
+
+    if (!withdrawModalState) return null;
+
+    switch (withdrawScene) {
         case 0:
             return (
                 <div className="modal-wrapper">
                     <div className="modal">
-                        <button className="exit-btn" onClick={closeModal}>
+                        <button
+                            className="exit-btn"
+                            onClick={closeWithdrawModal}
+                        >
                             <img src={X} alt="x" />
                         </button>
                         <div className="header">
                             <p>
-                                Approve Tickets{" "}
-                                <span role="img" aria-label="check-mark">
-                                    ✅
+                                Approve Ticket{" "}
+                                <span role="img" aria-label="ticket">
+                                    🎟
                                 </span>
                             </p>
                             <div className="white-line"></div>
                         </div>
+                        <div className="body">
+                            <img src={approveImage} alt="unlock" />
+                        </div>
                         <div className="footer">
-                            <button onClick={() => setScene(1)}>Confirm</button>
+                            <button onClick={confirmApproveTicket}>
+                                Confirm
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -41,12 +85,15 @@ export default function Modal(props) {
             return (
                 <div className="modal-wrapper">
                     <div className="modal">
-                        <button className="exit-btn" onClick={closeModal}>
+                        <button
+                            className="exit-btn"
+                            onClick={closeWithdrawModal}
+                        >
                             <img src={X} alt="x" />
                         </button>
                         <div className="header">
                             <p>
-                                Deposit Tickets{" "}
+                                Withdraw Dai{" "}
                                 <span role="img" aria-label="fire">
                                     🔥
                                 </span>
@@ -54,11 +101,17 @@ export default function Modal(props) {
                             <div className="white-line"></div>
                         </div>
                         <div className="body">
-                            <input placeholder="Amount"></input>
-                            <p>Balance: {daiBalance} EHM</p>
+                            <input
+                                placeholder="Amount"
+                                type="number"
+                                onChange={handleChange}
+                            ></input>
+                            <p>Limit: {ticketBalance} DAI</p>
                         </div>
                         <div className="footer">
-                            <button onClick={() => setScene(2)}>Confirm</button>
+                            <button onClick={confirmWithdrawDai}>
+                                Confirm
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -68,7 +121,10 @@ export default function Modal(props) {
             return (
                 <div className="modal-wrapper">
                     <div className="modal">
-                        <button className="exit-btn" onClick={closeModal}>
+                        <button
+                            className="exit-btn"
+                            onClick={closeWithdrawModal}
+                        >
                             <img src={X} alt="x" />
                         </button>
                         <div className="header">
@@ -80,8 +136,20 @@ export default function Modal(props) {
                             </p>
                             <div className="white-line"></div>
                         </div>
-                        <div className="footer">
-                            <button onClick={() => setScene(3)}>Confirm</button>
+                        <div className="body">
+                            <p>Waiting for Confirmations</p>
+                            <img src={clock} alt="unlock" />
+                            <a
+                                className="txHash"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                href={`https://rinkeby.etherscan.io/tx/${txHash}`}
+                            >
+                                Tx Hash:{shortTxHash}{" "}
+                                <span role="img" aria-label="link">
+                                    🔗
+                                </span>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -91,7 +159,10 @@ export default function Modal(props) {
             return (
                 <div className="modal-wrapper">
                     <div className="modal">
-                        <button className="exit-btn" onClick={closeModal}>
+                        <button
+                            className="exit-btn"
+                            onClick={closeWithdrawModal}
+                        >
                             <img src={X} alt="x" />
                         </button>
                         <div className="header">
@@ -103,11 +174,23 @@ export default function Modal(props) {
                             </p>
                             <div className="white-line"></div>
                         </div>
-                        <div className="footer"></div>
+                        <div className="body">
+                            <img src={check} alt="unlock" />
+                            <a
+                                className="txHash"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                href={`https://rinkeby.etherscan.io/tx/${txHash}`}
+                            >
+                                Tx Hash: {shortTxHash}{" "}
+                                <span role="img" aria-label="link">
+                                    🔗
+                                </span>
+                            </a>
+                        </div>
                     </div>
                 </div>
             );
-            break;
 
         default:
             break;

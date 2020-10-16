@@ -12,10 +12,10 @@ import { approveToken, depositDaiToPool } from "../../utils/contractFunctions";
 export default function Modal(props) {
     const {
         daiBalance,
-        modalState,
-        closeModal,
-        scene,
-        setScene,
+        depositModalState,
+        closeDepositModal,
+        depositScene,
+        setDepositScene,
         userAddress,
         loadErc20Data,
     } = props;
@@ -24,7 +24,7 @@ export default function Modal(props) {
     const [depositAmount, setDepositAmount] = useState("0");
 
     const confirmApproveDai = () => {
-        approveToken("DAI", setScene);
+        approveToken("DAI", setDepositScene);
     };
 
     const handleChange = (e) => {
@@ -37,21 +37,24 @@ export default function Modal(props) {
         await depositDaiToPool(
             userAddress,
             depositAmount,
-            setScene,
+            setDepositScene,
             setTxHash,
-            setShortTxHash
+            setShortTxHash,
+            loadErc20Data
         );
-        loadErc20Data(userAddress);
     };
 
-    if (!modalState) return null;
+    if (!depositModalState) return null;
 
-    switch (scene) {
+    switch (depositScene) {
         case 0:
             return (
                 <div className="modal-wrapper">
                     <div className="modal">
-                        <button className="exit-btn" onClick={closeModal}>
+                        <button
+                            className="exit-btn"
+                            onClick={closeDepositModal}
+                        >
                             <img src={X} alt="x" />
                         </button>
                         <div className="header">
@@ -77,7 +80,10 @@ export default function Modal(props) {
             return (
                 <div className="modal-wrapper">
                     <div className="modal">
-                        <button className="exit-btn" onClick={closeModal}>
+                        <button
+                            className="exit-btn"
+                            onClick={closeDepositModal}
+                        >
                             <img src={X} alt="x" />
                         </button>
                         <div className="header">
@@ -108,7 +114,10 @@ export default function Modal(props) {
             return (
                 <div className="modal-wrapper">
                     <div className="modal">
-                        <button className="exit-btn" onClick={closeModal}>
+                        <button
+                            className="exit-btn"
+                            onClick={closeDepositModal}
+                        >
                             <img src={X} alt="x" />
                         </button>
                         <div className="header">
@@ -124,6 +133,7 @@ export default function Modal(props) {
                             <p>Waiting for Confirmations</p>
                             <img src={clock} alt="unlock" />
                             <a
+                                className="txHash"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 href={`https://rinkeby.etherscan.io/tx/${txHash}`}
@@ -142,7 +152,10 @@ export default function Modal(props) {
             return (
                 <div className="modal-wrapper">
                     <div className="modal">
-                        <button className="exit-btn" onClick={closeModal}>
+                        <button
+                            className="exit-btn"
+                            onClick={closeDepositModal}
+                        >
                             <img src={X} alt="x" />
                         </button>
                         <div className="header">
@@ -157,6 +170,7 @@ export default function Modal(props) {
                         <div className="body">
                             <img src={check} alt="unlock" />
                             <a
+                                className="txHash"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 href={`https://rinkeby.etherscan.io/tx/${txHash}`}
