@@ -167,7 +167,7 @@ export default function Modal(props) {
                         </button>
                         <div className="header">
                             <p>
-                                Deposit Successful{" "}
+                                Withdraw Successful{" "}
                                 <span role="img" aria-label="confetti">
                                     🎊
                                 </span>

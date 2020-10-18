@@ -29,7 +29,6 @@ const REFERRER_ADDRESS = "0xec8b449D4cedcc1BF688EAA40B7dFafd6d2D00DC";
 export const initializeContracts = async (providerz) => {
     try {
         const provider = new ethers.providers.Web3Provider(providerz);
-        // const provider = new ethers.providers.Web3Provider(window.ethereum);
         const signer = provider.getSigner();
         const userAddress = await signer.getAddress();
         strategyContract = new ethers.Contract(
@@ -196,7 +195,7 @@ export const depositDaiToPool = async (
         setScene(2);
         await depositTx.wait();
         setScene(3);
-        loadErc20Data(userAddress);
+        setTimeout(loadErc20Data(userAddress), 5000); // give time to wait for tx to settle
     } catch (error) {
         console.log(error);
         window.alert("There was an error depositing the Dai");
@@ -229,7 +228,7 @@ export const withdrawDaiFromPool = async (
         setScene(2);
         await withdrawTx.wait();
         setScene(3);
-        loadErc20Data(userAddress);
+        setTimeout(loadErc20Data(userAddress), 5000); // give time to wait for tx to settle
     } catch (error) {
         console.log(error);
         window.alert("There was an error withdrawing the Dai");

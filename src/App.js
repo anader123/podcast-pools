@@ -26,6 +26,7 @@ const providerOptions = {
             id: process.env.REACT_APP_PORTIS_ID,
         },
     },
+    metamask: {},
 };
 
 const web3Modal = new Web3Modal({
@@ -62,16 +63,36 @@ function App() {
         ],
     });
     const [depositModalState, setDepositModalState] = useState(false);
-    const [depositScene, setDepositScene] = useState(2);
+    const [depositScene, setDepositScene] = useState(0);
 
     const [withdrawModalState, setWithdrawModalState] = useState(false);
-    const [withdrawScene, setWithdrawScene] = useState(2);
+    const [withdrawScene, setWithdrawScene] = useState(0);
 
     const connectWallet = async () => {
         await web3Modal._toggleModal();
 
+        // Subscribe to accounts change
+        web3Modal.on("accountsChanged", (accounts) => {
+            console.log(accounts);
+        });
+
         web3Modal.on("connect", async (provider) => {
             loadContractData(provider);
+        });
+
+        web3Modal.on("disconnect", () => {
+            walletConnected(false);
+        });
+
+        web3Modal.on("accountsChanged", async (accounts) => {
+            console.log("hit");
+            const userAddress = accounts[0];
+            const shortAd = addressShortener(userAddress);
+            loadErc20Data(userAddress);
+            await loadNftData();
+
+            setShortAddress(shortAd);
+            setAddress(userAddress);
         });
     };
 
@@ -79,8 +100,6 @@ function App() {
         if (window.ethereum.networkVersion !== "4")
             return window.alert("Please change to Rinkeby");
         const userAddress = await initializeContracts(provider);
-        // const addresses = await window.ethereum.enable();
-        // const userAddress = addresses[0];
 
         const shortAd = addressShortener(userAddress);
         const newTimeRemaining = await getPrizePeriodRemaining();
@@ -116,9 +135,9 @@ function App() {
     };
 
     const openDepositModal = () => {
-        // if (+daiAllowance > 0) {
-        //     setDepositScene(1);
-        // }
+        if (+daiAllowance > 0) {
+            setDepositScene(1);
+        }
         console.log(daiAllowance);
         setDepositModalState(true);
     };
@@ -129,9 +148,9 @@ function App() {
     };
 
     const openWithdrawModal = () => {
-        // if (+ticketAllowance > 0) {
-        //     setWithdrawScene(1);
-        // }
+        if (+ticketAllowance > 0) {
+            setWithdrawScene(1);
+        }
         setWithdrawModalState(true);
     };
 

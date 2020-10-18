@@ -11,7 +11,7 @@ const PRIZE_STRAT_ADDRESS = "0xDf577189ad9659070D903d1a7A22d0Fb9E07f2f8";
 const PRIZE_POOL_ADDRESS = "0x65D16e7C4A7CB9D8Fa2D8Bbe55916FfB6Efe87fD";
 const INTO_ETH_TOKEN_ADDRESS = "0x6325764783626E233F5ff4f2D8D1F2bcCD9d6105";
 
-// Ethers Setup
+// Ethers Setup with Pocket Network
 const provider = new ethers.providers.JsonRpcProvider(WEB3_PROVIDER);
 const wallet = new ethers.Wallet(MINT_PRIV_KEY, provider);
 

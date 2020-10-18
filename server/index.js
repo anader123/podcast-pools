@@ -41,8 +41,9 @@ const checkRssAndMint = async () => {
     console.log(`Token was added to pool. TxHash: ${addResult}`);
 };
 
-startAndAwardPrize();
-// getPodEpisodeData(2);
+// checkRssAndMint()
+// startAndAwardPrize();
+getPodEpisodeData(0);
 
 // Server Listening
 app.listen(process.env.SERVER_PORT, () =>
