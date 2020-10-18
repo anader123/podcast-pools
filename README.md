@@ -4,7 +4,7 @@ _Win NFT episodes from your favorite Podcasts_
 
 ## Description
 
-Podcast Pools allows for podcast creators to capture value by having their fans lock up stablecoins into a [no loss lottery](https://en.wikipedia.org/wiki/Prize-linked_savings_account) where the prize is an NFT that represents that week’s episode. Similar to Patreon, people can contribute to creators they support, but instead of directly donating money, they are instead giving the interest earned by their assets for a chance to win a tokenized episode.
+Podcast Pools allows for podcast creators to capture value by having their fans lock up stablecoins into a [no loss lottery](https://en.wikipedia.org/wiki/Prize-linked_savings_account) where the prize is an NFT that represents that week’s episode. Similar to Patreon, people can contribute to creators they support, but instead of directly donating money, they are instead giving the interest earned by their assets for a chance to win a [tokenized episode](https://en.wikipedia.org/wiki/Non-fungible_token).
 
 ## Project Highlights
 
@@ -26,7 +26,7 @@ Podcast Pools allows for podcast creators to capture value by having their fans 
 
 **b.** The serves then formats the recent episode data and uploads the metadata to [IPFS](https://ipfs.io/#how).
 
-**c.** The server uses it's private key to mint a new episode NFT to the pool contract's address. When the server creates the NFT, it points the [token's metadata URI ](https://docs.opensea.io/docs/metadata-standards) to the IPFS hash of the metadata for the new episode.
+**c.** The server uses it's private key to mint a new [NFT episode](https://en.wikipedia.org/wiki/Non-fungible_token) to the pool contract's address. When the server creates the NFT, it points the [token's metadata URI ](https://docs.opensea.io/docs/metadata-standards) to the IPFS hash of the metadata for the new episode.
 
 **d.** The NFT contract mints and assigns ownership to the pool contract.
 
@@ -54,7 +54,7 @@ Podcast Pools allows for podcast creators to capture value by having their fans 
 
 **URIs are formatted as ipfs://ipfs/[ipfsHash]**
 
-For example: Querying IPFS with the hash QmQMZA7WZiZUVJqujJX2kbtUu53VmWaF7PhkwqatF9uF8j returns:
+For example: Querying IPFS with the hash [QmQMZA7WZiZUVJqujJX2kbtUu53VmWaF7PhkwqatF9uF8j](https://ipfs.infura.io/ipfs/QmQMZA7WZiZUVJqujJX2kbtUu53VmWaF7PhkwqatF9uF8j) returns:
 
 ```javascript
 {

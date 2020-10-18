@@ -31,7 +31,7 @@ const providerOptions = {
 
 const web3Modal = new Web3Modal({
     network: "rinkeby",
-    cacheProvider: true,
+    cacheProvider: false,
     providerOptions,
     theme: {
         background: "rgb(39, 49, 56)",
@@ -69,17 +69,22 @@ function App() {
     const [withdrawScene, setWithdrawScene] = useState(0);
 
     const connectWallet = async () => {
-        await web3Modal._toggleModal();
-
-        web3Modal.on("connect", async (provider) => {
+        let provider;
+        // await web3Modal.clearCachedProvider();
+        try {
+            provider = await web3Modal.connect();
             loadContractData(provider);
-        });
+        } catch (erorr) {
+            console.log("Could not get a wallet connection", erorr);
+            return;
+        }
 
-        web3Modal.on("disconnect", () => {
-            walletConnected(false);
-        });
-
-        web3Modal.on("accountsChanged", async (accounts) => {
+        provider.on("accountsChanged", async (accounts) => {
+            if (accounts[0] === undefined) {
+                setWalletConnected(false);
+                setShortAddress("");
+                setAddress("");
+            }
             const userAddress = accounts[0];
             const shortAd = addressShortener(userAddress);
             loadErc20Data(userAddress);
