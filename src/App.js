@@ -71,11 +71,6 @@ function App() {
     const connectWallet = async () => {
         await web3Modal._toggleModal();
 
-        // Subscribe to accounts change
-        web3Modal.on("accountsChanged", (accounts) => {
-            console.log(accounts);
-        });
-
         web3Modal.on("connect", async (provider) => {
             loadContractData(provider);
         });
@@ -85,7 +80,6 @@ function App() {
         });
 
         web3Modal.on("accountsChanged", async (accounts) => {
-            console.log("hit");
             const userAddress = accounts[0];
             const shortAd = addressShortener(userAddress);
             loadErc20Data(userAddress);
@@ -97,7 +91,7 @@ function App() {
     };
 
     const loadContractData = async (provider) => {
-        if (window.ethereum.networkVersion !== "4")
+        if (window.ethereum.networkVersion !== "4" && provider.isMetaMask)
             return window.alert("Please change to Rinkeby");
         const userAddress = await initializeContracts(provider);
 
@@ -138,7 +132,6 @@ function App() {
         if (+daiAllowance > 0) {
             setDepositScene(1);
         }
-        console.log(daiAllowance);
         setDepositModalState(true);
     };
 

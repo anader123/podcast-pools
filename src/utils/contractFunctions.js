@@ -159,7 +159,6 @@ export const approveToken = async (type, setScene) => {
     else return window.alert("Error Invalid Token Type");
 
     try {
-        console.log(DaiToken);
         const weiValue = ethers.utils.parseUnits("1000000", 18);
         const approveTx = await tokenContract.approve(
             PRIZE_POOL_ADDRESS,
