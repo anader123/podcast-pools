@@ -32,6 +32,7 @@ const uploadURIData = async (dataObj) => {
     try {
         const URIData = formatTokenURIData(dataObj);
         const ipfsHash = await ipfs.addJSON(URIData);
+        console.log(`Data uploaded to IPFS: ${ipfsHash}`);
         return ipfsHash;
     } catch (error) {
         console.log(error);

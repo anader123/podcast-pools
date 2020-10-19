@@ -51,7 +51,6 @@ const getRecentTokenHash = async () => {
         const tokenCount = await intoEtherTokenContract.totalSupply();
         const result = await intoEtherTokenContract.tokenURI(tokenCount);
         const ipfsHash = result.slice(12); //return value is formatted as ipfs://ipfs/[hash]
-        console.log(ipfsHash);
         return ipfsHash;
     } catch (error) {
         console.log(error);
