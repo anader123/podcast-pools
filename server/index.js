@@ -38,14 +38,14 @@ const checkRssAndMint = async () => {
     const addResult = await addERC721ToPrizePool();
     if (addResult === false)
         return console.log("Error with adding token to the pool");
-    console.log(`Token was added to pool. TxHash: ${addResult}`);
+    console.log(`Token was added as a prize. TxHash: ${addResult}`);
 };
 
-checkRssAndMint();
+// checkRssAndMint();
 // startAndAwardPrize();
-// getPodEpisodeData(0);
 
 // Server Listening
 app.listen(process.env.SERVER_PORT, () =>
-    console.log(`Server is running up on Port ${process.env.SERVER_PORT}`)
+    // console.log(`Server is running on Port ${process.env.SERVER_PORT}`)
+    console.log(`Server is running`)
 );

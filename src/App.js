@@ -134,6 +134,7 @@ function App() {
     };
 
     const openDepositModal = () => {
+        console.log(daiAllowance);
         if (+daiAllowance > 0) {
             setDepositScene(1);
         }
