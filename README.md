@@ -10,6 +10,8 @@ In this project, a no loss lottery is where users lock up Dai into an interest e
 
 Similar to Patreon, people can contribute to creators they support, but instead of directly donating money, they are instead giving the interest earned by their assets for a chance to win a [tokenized episode](https://en.wikipedia.org/wiki/Non-fungible_token).
 
+![alt text](https://github.com/anader123/podcast-pools/raw/master/readme_images/podpool-summary.png "Summary")
+
 ## Project Highlights
 
 -   PoolTogether v3 Contracts
