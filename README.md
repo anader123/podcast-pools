@@ -8,7 +8,7 @@ Podcast Pools allows for podcast creators to capture value by having their fans 
 
 In this project, a no loss lottery is where users lock up Dai into an interest earning protocol in exchange for ticket tokens and a chance to win a prize. The no loss aspect is that the user doesn't lose their initial deposit, only the interest while their Dai is locked up. In this case, the prize for the lottery is an NTF episode from that week's podcast and the interest from all the Dai goes to fund the Podcast creator. If a user doesn't win that week's prize they are auto enrolled into the next week's prize drawing without having to do anything.
 
-Similar to Patreon, people can contribute to creators they support, but instead of directly donating money, they are instead giving the interest earned by their assets for a chance to win a [tokenized episode](https://en.wikipedia.org/wiki/Non-fungible_token).
+Similar to Patreon, people can contribute to creators they support, but instead of directly donating money, they are instead giving the interest earned by their assets for a chance to win an NFT episode.
 
 ![alt text](https://github.com/anader123/podcast-pools/raw/master/readme_images/podpool-summary.png "Summary")
 
@@ -28,11 +28,11 @@ Similar to Patreon, people can contribute to creators they support, but instead 
 
 ![alt text](https://github.com/anader123/podcast-pools/raw/master/readme_images/add-diagram.png "Add Diagran")
 
-**a.** The server is listening to a Podcast's [RSS feed](https://en.wikipedia.org/wiki/RSS) and sees that a new episode has been added.
+**a.** The server is listening to a Podcast's RSS feed (an API that lists the episodes) and sees that a new episode has been added.
 
-**b.** The serves then formats the recent episode data and uploads the metadata to [IPFS](https://ipfs.io/#how).
+**b.** The serves then formats the recent episode data and uploads the metadata to IPFS.
 
-**c.** The server uses it's private key to mint a new [NFT episode](https://en.wikipedia.org/wiki/Non-fungible_token) to the pool contract's address. When the server creates the NFT, it points the [token's metadata URI ](https://docs.opensea.io/docs/metadata-standards) to the IPFS hash of the metadata for the new episode.
+**c.** The server uses it's private key to mint a new NFT episode to the pool contract's address. When the server creates the NFT, it points the [token's metadata URI](https://docs.opensea.io/docs/metadata-standards) to the IPFS hash of the metadata for the new episode.
 
 **d.** The NFT contract mints and assigns ownership to the pool contract.
 
