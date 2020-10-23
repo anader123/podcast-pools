@@ -6,7 +6,7 @@ _Win NFT episodes from your favorite Podcasts_
 
 Podcast Pools allows for podcast creators to capture value by having their fans lock up stablecoins into a no loss lottery where the prize is an NFT that represents that week’s episode.
 
-In this project, a no loss lottery is where users lock up Dai into an interest earning protocol in exchange for ticket tokens and a chance to win a prize. The no loss aspect is that the user doesn't lose their initial deposit, only the interest while their Dai is locked up. In this case, the prize for the lottery is an NTF episode from that week's podcast and the interest from all the Dai goes to fund the Podcast creator. If a user doesn't win that week's prize they are auto enrolled into the next week's prize drawing without having to do anything.
+In this project, a no loss lottery is where users lock up Dai into an interest earning protocol in exchange for ticket tokens and a chance to win a prize. The no loss aspect is that the user doesn't lose their initial deposit, only the interest while their Dai is locked up. In this case, the prize for the lottery is an NFT episode from that week's podcast and the interest from all the Dai goes to fund the Podcast creator. If a user doesn't win that week's prize they are auto enrolled into the next week's prize drawing without having to do anything.
 
 Similar to Patreon, people can contribute to creators they support, but instead of directly donating money, they are instead giving the interest earned by their assets for a chance to win an NFT episode.
 

@@ -18,7 +18,7 @@ app.use(express.json());
 app.use(cors());
 
 const checkRssAndMint = async () => {
-    const episodeData = await getPodEpisodeData(2); // 0 gets the latest epi
+    const episodeData = await getPodEpisodeData(0); // 0 gets the latest epi
     const recentIpfsHash = await getRecentTokenHash();
     const recentTokenEpisodeName = await getNameFromIpfs(recentIpfsHash);
     const recentEpisodeName = episodeData.name;
@@ -41,8 +41,13 @@ const checkRssAndMint = async () => {
     console.log(`Token was added as a prize. TxHash: ${addResult}`);
 };
 
-// checkRssAndMint();
-// startAndAwardPrize();
+// getPodEpisodeData(0);
+
+// Checks to see if prize is ready to be given out and if it is it rewards the winner
+startAndAwardPrize();
+
+// Sees what the newest podcast is in the rss feed and mints a new one if needed
+checkRssAndMint();
 
 // Server Listening
 app.listen(process.env.SERVER_PORT, () =>
